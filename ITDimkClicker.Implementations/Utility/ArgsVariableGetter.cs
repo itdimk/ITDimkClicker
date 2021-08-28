@@ -6,7 +6,7 @@ namespace ITDimkClicker.Recorder.Utility
     {
         private static string[] args = Environment.GetCommandLineArgs();
 
-        public static string GetVariable(string variableName)
+        public static string Get(string variableName)
         {
             int index = Array.IndexOf(args, variableName);
 

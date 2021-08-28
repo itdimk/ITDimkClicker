@@ -1,14 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <OutputType>WinExe</OutputType>
         <TargetFramework>net5.0-windows</TargetFramework>
         <UseWindowsForms>true</UseWindowsForms>
-        <OutputType>Exe</OutputType>
-        <LangVersion>8</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ITDimkClicker.Abstractions\ITDimkClicker.Abstractions.csproj" />
       <ProjectReference Include="..\ITDimkClicker.Implementations\ITDimkClicker.Implementations.csproj" />
     </ItemGroup>
 

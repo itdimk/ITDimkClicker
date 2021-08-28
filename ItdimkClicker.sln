@@ -9,7 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawInput.Sharp", "RawInput.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITDimkClicker.Implementations", "ITDimkClicker.Implementations\ITDimkClicker.Implementations.csproj", "{EF18694D-594E-44F4-AE3D-37FDF128BF7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITDimkClicker.RecorderApp", "ITDimkClicker.RecorderApp\ITDimkClicker.RecorderApp.csproj", "{FEE56F3B-049C-4A50-82E1-2FD375A9874D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITDImkClicker.ConsoleApp", "ITDImkClicker.ConsoleApp\ITDImkClicker.ConsoleApp.csproj", "{A3C53061-C823-486F-957F-AFA688C2F6E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITDimkClicker.App", "ITDimkClicker.App\ITDimkClicker.App.csproj", "{D8B293A5-FA28-447C-B336-4EF8A4BC4A43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +31,14 @@ Global
 		{EF18694D-594E-44F4-AE3D-37FDF128BF7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF18694D-594E-44F4-AE3D-37FDF128BF7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF18694D-594E-44F4-AE3D-37FDF128BF7A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FEE56F3B-049C-4A50-82E1-2FD375A9874D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FEE56F3B-049C-4A50-82E1-2FD375A9874D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FEE56F3B-049C-4A50-82E1-2FD375A9874D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FEE56F3B-049C-4A50-82E1-2FD375A9874D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3C53061-C823-486F-957F-AFA688C2F6E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3C53061-C823-486F-957F-AFA688C2F6E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3C53061-C823-486F-957F-AFA688C2F6E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3C53061-C823-486F-957F-AFA688C2F6E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8B293A5-FA28-447C-B336-4EF8A4BC4A43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8B293A5-FA28-447C-B336-4EF8A4BC4A43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8B293A5-FA28-447C-B336-4EF8A4BC4A43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8B293A5-FA28-447C-B336-4EF8A4BC4A43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

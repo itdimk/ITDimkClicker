@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
 using ITDimkClicker.Abstractions.Data;
@@ -40,7 +41,6 @@ namespace ITDimkClicker.Implementations.Services
             
             void ReceiverOnInput(object sender, RawInputEventArgs e)
             {
-                Application.DoEvents();
                 result.Add(new MacroEvent(DateTime.Now.Ticks - startTimeStamp, e.Data));
 
                 if (!token.IsCancellationRequested) return;
