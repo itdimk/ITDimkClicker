@@ -46,13 +46,14 @@ namespace ITDImkClicker.ConsoleApp
             var result = recorder.RunLoop(token);
             
             var output = File.OpenWrite(ArgsVariableGetter.Get(ArgsConstants.OUTPUT));
-            fileManager.Save(result, output);
+            fileManager.Write(result, output);
             output.Close();
         }
 
         static void RunPlayer(CancellationToken token)
         {
-            var macros = MacroEx.ReadFromStream(File.OpenRead(ArgsVariables.InputFileName));
+            IMacroFileManager fileManager = new MacroFileManager();
+            var macros = fileManager.Read(File.OpenRead(ArgsVariables.InputFileName));
 
             var player = new MacroPlayer();
             player.RunLoop(macros, token);

@@ -10,4 +10,11 @@
       <ProjectReference Include="..\ITDimkClicker.Abstractions\ITDimkClicker.Abstractions.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Extensions\MacroEventEx.cs" />
+      <Compile Remove="Extensions\MacroEx.cs" />
+      <Compile Remove="Extensions\RawInputKeyboardDataEx.cs" />
+      <Compile Remove="Extensions\RawInputMouseDataEx.cs" />
+    </ItemGroup>
+
 </Project>

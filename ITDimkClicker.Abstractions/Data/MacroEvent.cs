@@ -13,10 +13,5 @@ namespace ITDimkClicker.Abstractions.Data
             Timestamp = timestamp;
             Data = data ?? throw new ArgumentNullException(nameof(data));
         }
-
-        public override string ToString()
-        {
-            return $"{Timestamp}^^{Data}";
-        }
     }
 }

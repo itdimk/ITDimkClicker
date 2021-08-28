@@ -5,7 +5,7 @@ namespace ITDimkClicker.Abstractions.Services
 {
     public interface IMacroFileManager
     {
-        void Save(Macro macros, Stream output);
-        Macro Load(Stream output);
+        void Write(Macro macros, Stream output);
+        Macro Read(Stream output);
     }
 }

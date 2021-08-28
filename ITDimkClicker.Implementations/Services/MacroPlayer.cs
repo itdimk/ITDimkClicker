@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -45,9 +46,12 @@ namespace ITDimkClicker.Implementations.Services
 
         public void RunLoop(Macro macro, CancellationToken token)
         {
+            
             Task.Factory.StartNew(() =>
             {
                 while (!token.IsCancellationRequested)
+                {
+                    Cursor.Position = new Point(macro.StartX, macro.StartY);
                     for (int i = 0; i < macro.Count; ++i)
                     {
                         PlayEvent(macro[i]);
@@ -57,6 +61,7 @@ namespace ITDimkClicker.Implementations.Services
                         if (token.IsCancellationRequested)
                             break;
                     }
+                }
 
                 Application.Exit();
             }, token);
