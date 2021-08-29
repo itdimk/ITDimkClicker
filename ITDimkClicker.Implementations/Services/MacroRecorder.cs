@@ -35,13 +35,14 @@ namespace ITDimkClicker.Implementations.Services
         public Macro RunLoop(CancellationToken token)
         {
             var result = new Macro(Cursor.Position.X, Cursor.Position.Y);
-            long startTimeStamp = DateTime.Now.Ticks;
-            
+            var stopwatch = new Stopwatch(); 
+           stopwatch.Start(); 
+           
             _receiver.Input += ReceiverOnInput;
             
             void ReceiverOnInput(object sender, RawInputEventArgs e)
             {
-                result.Add(new MacroEvent(DateTime.Now.Ticks - startTimeStamp, e.Data));
+                result.Add(new MacroEvent(stopwatch.ElapsedTicks, e.Data));
 
                 if (!token.IsCancellationRequested) return;
                 _receiver.Input -= ReceiverOnInput;

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using ITDimkClicker.Abstractions.Services;
 using ITDimkClicker.Implementations.Extensions;
@@ -55,6 +57,9 @@ namespace ITDImkClicker.ConsoleApp
             IMacroFileManager fileManager = new MacroFileManager();
             var macros = fileManager.Read(File.OpenRead(ArgsVariables.InputFileName));
 
+             // var hWnd = Process.GetProcesses().First(p => p.MainWindowTitle.Contains("brenz"))
+             //     .MainWindowHandle;
+            
             var player = new MacroPlayer();
             player.RunLoop(macros, token);
         }

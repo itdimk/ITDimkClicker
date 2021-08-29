@@ -19,7 +19,7 @@ namespace ITDimkClicker.App
             InitializeComponent();
             var hook = new KeyboardHook();
             hook.RegisterHotKey(ModifKeys.Alt, Keys.R);
-            hook.RegisterHotKey(ModifKeys.Alt, Keys.W);
+            hook.RegisterHotKey(ModifKeys.Alt, Keys.A);
             hook.KeyPressed += HookOnKeyPressed;
         }
 
@@ -28,7 +28,7 @@ namespace ITDimkClicker.App
             if (e.Key == Keys.R)
                 RunRecord();
 
-            if (e.Key == Keys.W)
+            if (e.Key == Keys.A)
                 RunPlayer();
         }
 
@@ -36,7 +36,7 @@ namespace ITDimkClicker.App
         {
             var startInfo = new ProcessStartInfo("ConsoleApp\\ITDImkClicker.ConsoleApp.exe ")
             {
-                Arguments = "record -b X -bm Alt -o macros.bin",
+                Arguments = "record -b S -bm Alt -o macros.bin",
                 UseShellExecute = true,
                 CreateNoWindow =  true,
                 
@@ -50,7 +50,7 @@ namespace ITDimkClicker.App
         {
             var startInfo = new ProcessStartInfo("ConsoleApp\\ITDImkClicker.ConsoleApp.exe ")
             {
-                Arguments = "play -b X -bm Alt -i macros.bin",
+                Arguments = "play -b S -bm Alt -i macros.bin",
                 UseShellExecute = true,
                 CreateNoWindow =  true,
                 WindowStyle =  ProcessWindowStyle.Hidden

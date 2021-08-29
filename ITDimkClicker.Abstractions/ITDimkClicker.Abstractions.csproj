@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RawInput.Sharp\RawInput.Sharp.csproj" />
+      <PackageReference Include="RawInput.Sharp" Version="0.0.4" />
     </ItemGroup>
 
 </Project>

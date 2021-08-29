@@ -17,4 +17,8 @@
       <Compile Remove="Extensions\RawInputMouseDataEx.cs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="InputSimulatorPlus" Version="1.0.7" />
+    </ItemGroup>
+
 </Project>

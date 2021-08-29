@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.31402.337
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITDimkClicker.Abstractions", "ITDimkClicker.Abstractions\ITDimkClicker.Abstractions.csproj", "{EBC395CB-C545-4812-8287-67499746FD80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawInput.Sharp", "RawInput.Sharp\RawInput.Sharp.csproj", "{11857F79-06F1-4F6E-AB7E-D19C2B1010FB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITDimkClicker.Implementations", "ITDimkClicker.Implementations\ITDimkClicker.Implementations.csproj", "{EF18694D-594E-44F4-AE3D-37FDF128BF7A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITDImkClicker.ConsoleApp", "ITDImkClicker.ConsoleApp\ITDImkClicker.ConsoleApp.csproj", "{A3C53061-C823-486F-957F-AFA688C2F6E7}"
@@ -23,10 +21,6 @@ Global
 		{EBC395CB-C545-4812-8287-67499746FD80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBC395CB-C545-4812-8287-67499746FD80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBC395CB-C545-4812-8287-67499746FD80}.Release|Any CPU.Build.0 = Release|Any CPU
-		{11857F79-06F1-4F6E-AB7E-D19C2B1010FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{11857F79-06F1-4F6E-AB7E-D19C2B1010FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{11857F79-06F1-4F6E-AB7E-D19C2B1010FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{11857F79-06F1-4F6E-AB7E-D19C2B1010FB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EF18694D-594E-44F4-AE3D-37FDF128BF7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EF18694D-594E-44F4-AE3D-37FDF128BF7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF18694D-594E-44F4-AE3D-37FDF128BF7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
