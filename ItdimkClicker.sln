@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31402.337
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITDimkClicker.Abstractions", "ITDimkClicker.Abstractions\ITDimkClicker.Abstractions.csproj", "{EBC395CB-C545-4812-8287-67499746FD80}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITDimkClicker.Common", "ITDimkClicker.Common\ITDimkClicker.Common.csproj", "{EBC395CB-C545-4812-8287-67499746FD80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITDimkClicker.Implementations", "ITDimkClicker.Implementations\ITDimkClicker.Implementations.csproj", "{EF18694D-594E-44F4-AE3D-37FDF128BF7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITDimkClicker.BL", "ITDimkClicker.BL\ITDimkClicker.BL.csproj", "{EF18694D-594E-44F4-AE3D-37FDF128BF7A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITDImkClicker.ConsoleApp", "ITDImkClicker.ConsoleApp\ITDImkClicker.ConsoleApp.csproj", "{A3C53061-C823-486F-957F-AFA688C2F6E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITDimkClicker.App", "ITDimkClicker.App\ITDimkClicker.App.csproj", "{D8B293A5-FA28-447C-B336-4EF8A4BC4A43}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITDimkClicker.Presentation", "ITDimkClicker.Presentation\ITDimkClicker.Presentation.csproj", "{67DC8EF3-C9B3-4E70-B9C8-3EE8EAF8991B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITDimkClicker.App", "ITDimkClicker.App\ITDimkClicker.App.csproj", "{A8508788-E82E-4657-9C02-2FEE7FB03704}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +31,14 @@ Global
 		{A3C53061-C823-486F-957F-AFA688C2F6E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3C53061-C823-486F-957F-AFA688C2F6E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3C53061-C823-486F-957F-AFA688C2F6E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D8B293A5-FA28-447C-B336-4EF8A4BC4A43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D8B293A5-FA28-447C-B336-4EF8A4BC4A43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D8B293A5-FA28-447C-B336-4EF8A4BC4A43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D8B293A5-FA28-447C-B336-4EF8A4BC4A43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67DC8EF3-C9B3-4E70-B9C8-3EE8EAF8991B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67DC8EF3-C9B3-4E70-B9C8-3EE8EAF8991B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67DC8EF3-C9B3-4E70-B9C8-3EE8EAF8991B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67DC8EF3-C9B3-4E70-B9C8-3EE8EAF8991B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8508788-E82E-4657-9C02-2FEE7FB03704}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8508788-E82E-4657-9C02-2FEE7FB03704}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8508788-E82E-4657-9C02-2FEE7FB03704}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8508788-E82E-4657-9C02-2FEE7FB03704}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

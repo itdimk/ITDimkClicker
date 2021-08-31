@@ -3,11 +3,16 @@
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net5.0-windows</TargetFramework>
-        <UseWindowsForms>true</UseWindowsForms>
+        <UseWPF>true</UseWPF>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ITDimkClicker.Implementations\ITDimkClicker.Implementations.csproj" />
+      <PackageReference Include="Ninject" Version="4.0.0-beta-0134" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ITDimkClicker.BL\ITDimkClicker.BL.csproj" />
+      <ProjectReference Include="..\ITDimkClicker.Common\ITDimkClicker.Common.csproj" />
     </ItemGroup>
 
 </Project>

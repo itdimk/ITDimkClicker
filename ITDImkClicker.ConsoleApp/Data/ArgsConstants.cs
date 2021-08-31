@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace ITDimkClicker.Recorder.Data
+﻿namespace ITDimkClicker.Recorder.Data
 {
     public static class ArgsConstants
     {
