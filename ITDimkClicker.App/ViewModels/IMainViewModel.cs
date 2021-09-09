@@ -1,7 +1,9 @@
-﻿namespace ITDimkClicker.App.ViewModels
+﻿using ITDimkClicker.App.Commands;
+
+namespace ITDimkClicker.App.ViewModels
 {
     public interface IMainViewModel
     {
-        int Value { get; set; }
+        OpenFileCommand OpenFile { get; }
     }
 }
