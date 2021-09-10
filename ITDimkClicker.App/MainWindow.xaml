@@ -17,6 +17,7 @@
            <RowDefinition Height="2*"></RowDefinition> 
         </Grid.RowDefinitions>
         
-        <Button Grid.Row="1" Grid.Column="1" Command="{Binding OpenFile}" />
+        <Button Grid.Row="1" Grid.Column="0" Command="{Binding OpenFile}" />
+        <Button Grid.Row="1" Grid.Column="1" Command="{Binding SaveFile}" />
     </Grid>
 </Window>

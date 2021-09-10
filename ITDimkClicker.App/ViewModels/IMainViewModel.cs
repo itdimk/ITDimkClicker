@@ -5,5 +5,6 @@ namespace ITDimkClicker.App.ViewModels
     public interface IMainViewModel
     {
         OpenFileCommand OpenFile { get; }
+        SaveFileCommand SaveFile { get; }
     }
 }
