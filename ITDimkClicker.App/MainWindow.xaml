@@ -3,21 +3,39 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ITDimkClicker.App"
+        xmlns:local="clr-namespace:ITDimkClicker.App.Converters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="ITDimk Clicker" Height="200" Width="300" ResizeMode="NoResize">
+    <Window.Resources>
+        <local:FileNameConverter x:Key="fileNameConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-           <ColumnDefinition Width="*"></ColumnDefinition> 
-           <ColumnDefinition Width="*"></ColumnDefinition> 
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        
+
         <Grid.RowDefinitions>
-           <RowDefinition Height="30px"></RowDefinition> 
-           <RowDefinition Height="2*"></RowDefinition> 
+            <RowDefinition Height="20px" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="20px" />
         </Grid.RowDefinitions>
-        
-        <Button Grid.Row="1" Grid.Column="0" Command="{Binding OpenFile}" />
-        <Button Grid.Row="1" Grid.Column="1" Command="{Binding SaveFile}" />
+
+        <Menu Grid.ColumnSpan="2">
+            <MenuItem Header="File">
+                <MenuItem Header="New" Command="{Binding NewFile}" />
+                <MenuItem Header="Open" Command="{Binding OpenFile}" />
+                <MenuItem Header="Save as" Command="{Binding SaveFile}" />
+            </MenuItem>
+            <MenuItem Header="Actions">
+                <MenuItem Header="Play" Command="{Binding RunPlay}" CommandParameter="{Binding CurrentFile}" />
+                <MenuItem Header="Record" Command="{Binding RunRecord}" CommandParameter="{Binding CurrentFile}" />
+            </MenuItem>
+        </Menu>
+        <StatusBar Grid.Row="2" Grid.ColumnSpan="2" DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock Text="{Binding CurrentFile, Converter={StaticResource fileNameConverter}}" />
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>

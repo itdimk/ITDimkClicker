@@ -15,14 +15,14 @@ namespace ITDimkClicker.App
     /// </summary>
     public partial class App : Application
     {
-        private IKernel _iocKernel;
+        private IReadOnlyKernel _iocKernel;
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
-            _iocKernel = new StandardKernel();
-            _iocKernel.Load(new IocConfiguration());
+            _iocKernel = new KernelConfiguration(new IocConfiguration())
+                .BuildReadonlyKernel();
 
             Current.MainWindow = _iocKernel.Get<MainWindow>();
             Current.MainWindow.Show();

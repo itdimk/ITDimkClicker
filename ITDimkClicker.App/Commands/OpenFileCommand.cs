@@ -7,21 +7,25 @@ namespace ITDimkClicker.App.Commands
     public class OpenFileCommand : ICommand
     {
         public event EventHandler<string> FileSelected;
-        
-        public bool CanExecute(object? parameter)
+
+        public bool CanExecute(object parameter)
         {
             return true;
         }
 
-        public void Execute(object? parameter)
+        public void Execute(object parameter)
         {
-            var dialog = new OpenFileDialog();
+            var dialog = new OpenFileDialog
+            {
+                Filter = "Macros files|*.bin",
+                AddExtension = true,
+            };
             bool? result = dialog.ShowDialog();
-            
-            if(result == true)
+
+            if (result == true)
                 FileSelected?.Invoke(this, dialog.FileName);
         }
 
-        public event EventHandler? CanExecuteChanged;
+        public event EventHandler CanExecuteChanged;
     }
 }

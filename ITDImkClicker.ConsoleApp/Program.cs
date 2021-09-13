@@ -31,7 +31,7 @@ namespace ITDImkClicker.ConsoleApp
                 Console.WriteLine(e.Message);
                 Console.WriteLine();
                 Console.WriteLine(e.StackTrace);
-                Console.ReadKey();
+                Thread.Sleep(5000);
             }
         }
 

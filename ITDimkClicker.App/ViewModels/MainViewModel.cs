@@ -1,89 +1,62 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows.Forms;
+using ITDimkClicker.App.Annotations;
 using ITDimkClicker.App.Commands;
 using ITDimkClicker.BL.Services;
-using ITDimkClicker.Common.Data;
-using ITDimkClicker.Common.Services;
 
 namespace ITDimkClicker.App.ViewModels
 {
     public class MainViewModel : IMainViewModel
     {
-        private readonly IMacroFileManager _fileManager;
-        private CancellationTokenSource _tokenSource;
-        private readonly string _macroFileName;
+        private string _currentFileName;
 
-        private Process _currentProcess;
-        private KeyboardHook _hook;
-
+        public NewFileCommand NewFile { get; }
         public OpenFileCommand OpenFile { get; }
         public SaveFileCommand SaveFile { get; }
+        public RunRecordCommand RunRecord { get; }
+        public RunPlayCommand RunPlay { get; }
 
-        public MainViewModel(IMacroFileManager fileManager)
+        public string CurrentFile
         {
-            _fileManager = fileManager;
-            _macroFileName = Path.Combine(Environment.CurrentDirectory, "macro.bin");
+            get => _currentFileName;
+            set
+            {
+                if (value == _currentFileName) return;
+                _currentFileName = value;
+                OnPropertyChanged();
+            }
+        }
 
+        public MainViewModel()
+        {
             OpenFile = new OpenFileCommand();
-            OpenFile.FileSelected += OpenFileOnFileSelected;
+            OpenFile.FileSelected += (_, e) => CurrentFile = e;
 
             SaveFile = new SaveFileCommand();
-            SaveFile.FileSelected += SaveFileOnFileSelected;
-
-            _hook = new KeyboardHook();
-            _hook.RegisterHotKey(ModifKeys.Alt, Keys.R);
-            _hook.RegisterHotKey(ModifKeys.Alt, Keys.A);
-            _hook.KeyPressed += OnKeyPressed;
-        }
-
-        private void SaveFileOnFileSelected(object? sender, string e)
-        {
-            if (File.Exists(_macroFileName))
-                File.Copy(_macroFileName, e, true);
-        }
-
-        private void OpenFileOnFileSelected(object? sender, string e)
-        {
-            File.Copy(e, _macroFileName, true);
-        }
-
-        private void OnKeyPressed(object sender, KeyPressedEventArgs e)
-        {
-            if (_currentProcess?.HasExited == false) return;
-            if (e.Key == Keys.A)
-                RunPlayer();
-            else if (e.Key == Keys.R)
-                RunRecord();
-        }
-
-        private void RunRecord()
-        {
-            var startInfo = new ProcessStartInfo("ConsoleApp\\ITDimkClicker.ConsoleApp.lnk ")
+            SaveFile.FileSelected += (_, e) =>
             {
-                Arguments = $"record -b S -bm Alt -o {_macroFileName}",
-                UseShellExecute = true,
-                CreateNoWindow = true,
-
-                WindowStyle = ProcessWindowStyle.Hidden
+                File.Copy(CurrentFile, e, true);
+                CurrentFile = e;
             };
 
-            Process.Start(startInfo);
+            NewFile = new NewFileCommand();
+            NewFile.NewFileCreated += (_, e) => CurrentFile = e;
+
+            RunPlay = new RunPlayCommand("ITDimkClicker.ConsoleApp.lnk", "ITDimkClicker.ConsoleApp");
+            RunRecord = new RunRecordCommand("ITDimkClicker.ConsoleApp.lnk", "ITDimkClicker.ConsoleApp");
         }
 
-        private void RunPlayer()
-        {
-            var startInfo = new ProcessStartInfo("ConsoleApp\\ITDimkClicker.ConsoleApp.lnk ")
-            {
-                Arguments = $"play -b S -bm Alt -i {_macroFileName}",
-                UseShellExecute = true,
-                CreateNoWindow = true,
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
+        public event PropertyChangedEventHandler PropertyChanged;
 
-            Process.Start(startInfo);
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
