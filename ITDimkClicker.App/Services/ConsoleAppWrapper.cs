@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace ITDimkClicker.App.Services
 {
@@ -7,10 +8,19 @@ namespace ITDimkClicker.App.Services
     {
         private const string AppPath = "ITDimkClicker.ConsoleApp.lnk";
         private Process _appProcess;
-
+        private bool _isRunnong;
 
         public event EventHandler IsRunningChanged;
-        public bool IsRunning => _appProcess != null;
+
+        public bool IsRunning
+        {
+            get => _isRunnong;
+            set
+            {
+                _isRunnong = value;
+                IsRunningChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
 
         public async void Run(string args)
         {
@@ -19,19 +29,14 @@ namespace ITDimkClicker.App.Services
                 Arguments = args,
                 UseShellExecute = true,
                 CreateNoWindow = true,
-                // WindowStyle = ProcessWindowStyle.Hidden
+                WindowStyle = ProcessWindowStyle.Hidden
             };
 
             _appProcess = Process.Start(startInfo);
+            
+            IsRunning = true;
             await _appProcess.WaitForExitAsync();
-            OnProcessExited(this, EventArgs.Empty);
-        }
-
-        private void OnProcessExited(object sender, EventArgs e)
-        {
-            IsRunningChanged?.Invoke(this, EventArgs.Empty);
-            _appProcess.Dispose();
-            _appProcess = null;
+            IsRunning = false;
         }
     }
 }

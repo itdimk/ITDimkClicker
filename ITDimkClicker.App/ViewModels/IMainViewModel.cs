@@ -11,5 +11,6 @@ namespace ITDimkClicker.App.ViewModels
         RunRecordCommand RunRecord { get; }
         RunPlayCommand RunPlay { get; }
         string CurrentFile { get; }
+        string State { get; }
     }
 }

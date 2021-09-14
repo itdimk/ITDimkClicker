@@ -1,26 +1,24 @@
 ﻿using System;
 using System.IO;
-using System.Windows.Input;
+using ITDimkClicker.App.Services;
 
 namespace ITDimkClicker.App.Commands
 {
-    public class NewFileCommand : ICommand
+    public class NewFileCommand : InactiveOnRunCommand
     {
         public event EventHandler<string> NewFileCreated;
-        
-        public bool CanExecute(object parameter)
+
+        public NewFileCommand(IConsoleAppWrapper wrapper) : base(wrapper)
         {
-            return true;
         }
 
-        public void Execute(object parameter)
+        public override void Execute(object parameter)
         {
-            string fileName = Path.GetRandomFileName() + ".bin";
+            string fileName = "New macros.bin";
             string fullPath = Path.Combine(Environment.CurrentDirectory, fileName);
-            File.Create(fullPath);
+            File.Create(fullPath).Dispose();
             NewFileCreated?.Invoke(this, fullPath);
         }
 
-        public event EventHandler CanExecuteChanged;
     }
 }
