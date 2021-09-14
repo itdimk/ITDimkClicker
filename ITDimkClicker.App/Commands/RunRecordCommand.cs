@@ -1,39 +1,27 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Input;
+using ITDimkClicker.App.Services;
 
 namespace ITDimkClicker.App.Commands
 {
     public class RunRecordCommand : ICommand
     {
-        private readonly string _appPath;
-        private readonly string _processName;
+        private readonly IConsoleAppWrapper _wrapper;
 
-        public RunRecordCommand(string appPath, string processName)
+        public RunRecordCommand(IConsoleAppWrapper wrapper)
         {
-            _appPath = appPath;
-            _processName = processName;
+            _wrapper = wrapper;
+            _wrapper.IsRunningChanged += (_, _) 
+                => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
-        
-        public bool CanExecute(object parameter)
-        {
-            return Process.GetProcessesByName(_processName).Length == 0;
-        }
+
+        public bool CanExecute(object parameter) => !_wrapper.IsRunning;
 
         public void Execute(object parameter)
         {
             string fileName = (string) parameter;
-            var startInfo = new ProcessStartInfo(_appPath)
-            {
-                Arguments = $"record -b S -bm Alt -o {fileName}",
-                UseShellExecute = true,
-                CreateNoWindow = true,
-
-                // WindowStyle = ProcessWindowStyle.Hidden
-            };
-
-           Process.Start(startInfo);
-           CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            _wrapper.Run($"record -b S -bm Alt -o {fileName}");
         }
 
         public event EventHandler CanExecuteChanged;

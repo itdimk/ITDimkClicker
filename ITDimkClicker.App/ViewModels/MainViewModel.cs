@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows.Forms;
 using ITDimkClicker.App.Annotations;
 using ITDimkClicker.App.Commands;
+using ITDimkClicker.App.Services;
 using ITDimkClicker.BL.Services;
 
 namespace ITDimkClicker.App.ViewModels
@@ -32,7 +33,7 @@ namespace ITDimkClicker.App.ViewModels
             }
         }
 
-        public MainViewModel()
+        public MainViewModel(IConsoleAppWrapper wrapper)
         {
             OpenFile = new OpenFileCommand();
             OpenFile.FileSelected += (_, e) => CurrentFile = e;
@@ -47,8 +48,8 @@ namespace ITDimkClicker.App.ViewModels
             NewFile = new NewFileCommand();
             NewFile.NewFileCreated += (_, e) => CurrentFile = e;
 
-            RunPlay = new RunPlayCommand("ITDimkClicker.ConsoleApp.lnk", "ITDimkClicker.ConsoleApp");
-            RunRecord = new RunRecordCommand("ITDimkClicker.ConsoleApp.lnk", "ITDimkClicker.ConsoleApp");
+            RunPlay = new RunPlayCommand(wrapper);
+            RunRecord = new RunRecordCommand(wrapper);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
