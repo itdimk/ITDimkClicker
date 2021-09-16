@@ -13,26 +13,35 @@ namespace ITDImkClicker.ConsoleApp
         private static CancellationTokenSource _cancel;
         private static CancellationHotkey _cancelHotkey;
 
-        static void Main()
+        static int Main()
         {
             try
             {
-                _cancel = new CancellationTokenSource();
-                _cancelHotkey = new CancellationHotkey(_cancel);
-                _cancelHotkey.Register(ArgsVariables.BreakHotkey, ArgsVariables.BreakModifier);
+                if (ArgsVariables.Mode == ArgsVariables.Actions.Concat)
+                    RunConcat();
+                else
+                {
+                    _cancel = new CancellationTokenSource();
+                    _cancelHotkey = new CancellationHotkey(_cancel);
+                    _cancelHotkey.Register(ArgsVariables.BreakHotkey, ArgsVariables.BreakModifier);
 
-                if (ArgsVariables.Mode == ArgsVariables.Actions.Play)
-                    RunPlayer(_cancel.Token);
-                else if (ArgsVariables.Mode == ArgsVariables.Actions.Record)
-                    RunRecorder(_cancel.Token);
+                    if (ArgsVariables.Mode == ArgsVariables.Actions.Play)
+                        RunPlayer(_cancel.Token);
+                    else if (ArgsVariables.Mode == ArgsVariables.Actions.Record)
+                        RunRecorder(_cancel.Token);
+                }
             }
+
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine();
                 Console.WriteLine(e.StackTrace);
-                Thread.Sleep(5000);
+                Thread.Sleep(2000);
+                return -1;
             }
+
+            return 0;
         }
 
         static void RunRecorder(CancellationToken token)
@@ -52,8 +61,23 @@ namespace ITDImkClicker.ConsoleApp
 
             using var input = File.OpenRead(ArgsVariables.InputFileName);
             var macros = fileManager.Read(input);
-            
+
             player.RunLoop(macros, token);
+        }
+
+        static void RunConcat()
+        {
+            IMacroFileManager fileManager = new MacroFileManager();
+
+            using var input = File.OpenRead(ArgsVariables.InputFileName);
+            using var output = File.Open(ArgsVariables.OutputFileName, FileMode.Open, FileAccess.ReadWrite);
+
+            var inputMacro = fileManager.Read(input);
+            var outputMacro = fileManager.Read(output);
+
+            output.Position = 0;
+            outputMacro.Concat(inputMacro);
+            fileManager.Write(outputMacro, output);
         }
     }
 }

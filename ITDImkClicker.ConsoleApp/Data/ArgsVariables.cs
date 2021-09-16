@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
@@ -12,9 +13,10 @@ namespace ITDimkClicker.Recorder.Data
         public enum Actions
         {
             Play,
-            Record
+            Record,
+            Concat
         }
-
+        
         public static string OutputFileName => ArgsVariableGetter.Get(ArgsConstants.OUTPUT, true);
         public static string InputFileName => ArgsVariableGetter.Get(ArgsConstants.INPUT, true);
         
@@ -46,13 +48,16 @@ namespace ITDimkClicker.Recorder.Data
             {
                 string[] args = Environment.GetCommandLineArgs();
 
-                if (Array.IndexOf(args, ArgsConstants.PLAY_MODE) != -1)
+                if (args.Contains(ArgsConstants.PLAY_MODE))
                     return Actions.Play;
 
-                if (Array.IndexOf(args, ArgsConstants.RECORD_MODE) != -1)
+                if (args.Contains(ArgsConstants.RECORD_MODE))
                     return Actions.Record;
 
-                throw new Exception("\"play\" or \"record\" mode is expected");
+                if (args.Contains(ArgsConstants.CONCAT_MODE))
+                    return Actions.Concat;
+                
+                throw new Exception("\"play\" or \"record\" or \"concat\" mode is expected");
             }
         }
     }

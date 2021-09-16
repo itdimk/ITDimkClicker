@@ -8,5 +8,6 @@
         public static string BREAK_HOTKEY = "-b";
         public static string PLAY_MODE = "play";
         public static string RECORD_MODE = "record";
+        public static string CONCAT_MODE = "concat";
     }
 }

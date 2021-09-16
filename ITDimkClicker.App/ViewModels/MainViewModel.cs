@@ -21,8 +21,9 @@ namespace ITDimkClicker.App.ViewModels
         public NewFileCommand NewFile { get; }
         public OpenFileCommand OpenFile { get; }
         public SaveFileCommand SaveFile { get; }
-        public RunRecordCommand RunRecord { get; }
-        public RunPlayCommand RunPlay { get; }
+        public RecordCommand Record { get; }
+        public PlayCommand Play { get; }
+        public ConcatCommand RunConcat { get; }
 
         public string CurrentFile
         {
@@ -62,10 +63,12 @@ namespace ITDimkClicker.App.ViewModels
             NewFile.NewFileCreated += (_, e) => CurrentFile = e;
             NewFile.Execute(new object());
 
-            RunPlay = new RunPlayCommand(wrapper);
-            RunRecord = new RunRecordCommand(wrapper);
+            RunConcat = new ConcatCommand(wrapper);
+            Play = new PlayCommand(wrapper);
+            Record = new RecordCommand(wrapper);
 
-            wrapper.IsRunningChanged += (sender, args) => State = wrapper.IsRunning ? "Working" : "Idle";
+            wrapper.IsRunningChanged += (sender, args) 
+                => State = wrapper.IsRunning ? "Working" : $"Idle (exit code: {wrapper.ExitCode})";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Drawing;
+using System.IO;
 using ITDimkClicker.Common.Data;
 using ITDimkClicker.Common.Services;
 using Linearstar.Windows.RawInput;
@@ -12,8 +13,6 @@ namespace ITDimkClicker.BL.Services
         public void Write(Macro macros, Stream output)
         {
             output.Write(macros.Count);
-            output.Write(macros.InitMouseX);
-            output.Write(macros.InitMouseY);
             macros.ForEach(e => Write(e, output));
         }
 
@@ -22,10 +21,10 @@ namespace ITDimkClicker.BL.Services
             int count = input.Read<int>();
             int startX = input.Read<int>();
             int startY = input.Read<int>();
-            
-            Macro result = new Macro(startX, startY);
-            
-            for(int i = 0; i < count; ++i)
+
+            Macro result = new Macro();
+
+            for (int i = 0; i < count; ++i)
                 result.Add(ReadMacroEvent(input));
             return result;
         }
@@ -33,10 +32,22 @@ namespace ITDimkClicker.BL.Services
         private MacroEvent ReadMacroEvent(Stream input)
         {
             var timestamp = input.Read<long>();
-            var data = ReadRawInputData(input);
-            return new MacroEvent(timestamp, data);
+            int macroEventType = input.Read<int>();
+
+            if (macroEventType == 1)
+            {
+                var data = ReadRawInputData(input);
+                return new InputMacroEvent(timestamp, data);
+            }
+
+            if (macroEventType == 2)
+            {
+                return new SetCursorPosMacroEvent(timestamp, input.Read<Point>());
+            }
+
+            return null;
         }
-        
+
 
         private RawInputData ReadRawInputData(Stream input)
         {
@@ -54,9 +65,19 @@ namespace ITDimkClicker.BL.Services
         private void Write(MacroEvent e, Stream output)
         {
             output.Write<long>(e.Timestamp);
-            Write(e.Data, output);
+
+            if (e is InputMacroEvent inputEvent)
+            {
+                output.Write(1);
+                Write(inputEvent.Data, output);
+            }
+            else if (e is SetCursorPosMacroEvent cursorEvent)
+            {
+                output.Write(2);
+                output.Write(cursorEvent.Position);
+            }
         }
-        
+
         private void Write(RawInputData data, Stream output)
         {
             byte[] buffer = data.ToStructure();

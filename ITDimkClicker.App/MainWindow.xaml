@@ -30,6 +30,7 @@
             <MenuItem Header="Actions">
                 <MenuItem Header="Play" Command="{Binding RunPlay}" CommandParameter="{Binding CurrentFile}" />
                 <MenuItem Header="Record" Command="{Binding RunRecord}" CommandParameter="{Binding CurrentFile}" />
+                <MenuItem Header="Concat" Command="{Binding RunConcat}" CommandParameter="{Binding CurrentFile}" />
             </MenuItem>
         </Menu>
 

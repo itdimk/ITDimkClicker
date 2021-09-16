@@ -8,8 +8,9 @@ namespace ITDimkClicker.App.ViewModels
         NewFileCommand NewFile { get; }
         OpenFileCommand OpenFile { get; }
         SaveFileCommand SaveFile { get; }
-        RunRecordCommand RunRecord { get; }
-        RunPlayCommand RunPlay { get; }
+        RecordCommand Record { get; }
+        PlayCommand Play { get; }
+        ConcatCommand RunConcat { get; }
         string CurrentFile { get; }
         string State { get; }
     }
