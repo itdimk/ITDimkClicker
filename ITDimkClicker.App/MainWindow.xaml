@@ -23,13 +23,18 @@
 
         <Menu Grid.ColumnSpan="2">
             <MenuItem Header="File">
-                <MenuItem Header="New" Command="{Binding NewFile}" />
-                <MenuItem Header="Open" Command="{Binding OpenFile}" />
-                <MenuItem Header="Save as" Command="{Binding SaveFile}" />
+                <MenuItem Header="New" Command="{Binding FileCreate}" 
+                          CommandParameter="{Binding CurrentFileAccessor}" />
+                <MenuItem Header="Open" Command="{Binding FileOpen}" 
+                          CommandParameter="{Binding CurrentFileAccessor}" />
+                <MenuItem Header="Save as" Command="{Binding FileSave}"
+                          CommandParameter="{Binding CurrentFileAccessor}" />
             </MenuItem>
             <MenuItem Header="Actions">
-                <MenuItem Header="Play" Command="{Binding RunPlay}" CommandParameter="{Binding CurrentFile}" />
-                <MenuItem Header="Record" Command="{Binding RunRecord}" CommandParameter="{Binding CurrentFile}" />
+                <MenuItem Header="Play" Command="{Binding Play}" 
+                          CommandParameter="{Binding CurrentFileAccessor}" />
+                <MenuItem Header="Record" Command="{Binding Record}" 
+                          CommandParameter="{Binding CurrentFileAccessor}" />
             </MenuItem>
         </Menu>
 

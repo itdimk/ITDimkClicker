@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using ITDimkClicker.Common.Services;
 
 namespace ITDimkClicker.App.Services
 {
     public class ConsoleAppWrapper : IConsoleAppWrapper
     {
-        private const string AppPath = "ITDimkClicker.ConsoleApp.lnk";
+        private readonly string _appFileName;
         private Process _appProcess;
         private bool _isRunnong;
 
@@ -22,9 +23,14 @@ namespace ITDimkClicker.App.Services
             }
         }
 
+        public ConsoleAppWrapper(string appFileName)
+        {
+            _appFileName = appFileName;
+        }
+        
         public async void Run(string args)
         {
-            var startInfo = new ProcessStartInfo(AppPath)
+            var startInfo = new ProcessStartInfo(_appFileName)
             {
                 Arguments = args,
                 UseShellExecute = true,

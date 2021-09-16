@@ -23,14 +23,14 @@ namespace ITDimkClicker.App
 
         private void OnHookKeyPressed(object sender, KeyPressedEventArgs e)
         {
-            var playCommand = ViewModel.RunPlay;
-            var recordCommand = ViewModel.RunRecord;
+            var playCommand = ViewModel.Play;
+            var recordCommand = ViewModel.Record;
             
             if (e.Key == Keys.A && playCommand.CanExecute(ViewModel.CurrentFile))
-               playCommand.Execute(ViewModel.CurrentFile); 
+               playCommand.Execute(ViewModel.CurrentFileAccessor); 
             
             else if (e.Key == Keys.R && recordCommand.CanExecute(ViewModel.CurrentFile))
-                recordCommand.Execute(ViewModel.CurrentFile);
+                recordCommand.Execute(ViewModel.CurrentFileAccessor);
         }
     }
 }

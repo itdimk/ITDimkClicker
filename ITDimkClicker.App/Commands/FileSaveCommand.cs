@@ -1,16 +1,16 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Input;
+using ITDimkClicker.App.Commands.Parameters;
 using ITDimkClicker.App.Services;
+using ITDimkClicker.Common.Services;
 using Microsoft.Win32;
 
 namespace ITDimkClicker.App.Commands
 {
-    public class SaveFileCommand : InactiveOnRunCommand
+    public class FileSaveCommand : BaseCommand
     {
-        public event EventHandler<string> FileSelected;
-
-
-        public SaveFileCommand(IConsoleAppWrapper wrapper) : base(wrapper)
+        public FileSaveCommand(IConsoleAppWrapper wrapper) : base(wrapper)
         {
         }
 
@@ -24,7 +24,10 @@ namespace ITDimkClicker.App.Commands
             bool? result = dialog.ShowDialog();
 
             if (result == true)
-                FileSelected?.Invoke(this, dialog.FileName);
+            {
+                var accessor = (CurrentFileAccessor)parameter;
+                File.Copy(accessor.GetCurrentFile(), dialog.FileName);
+            }
         }
     }
 }

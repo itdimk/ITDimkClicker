@@ -6,14 +6,13 @@ using Ninject.Modules;
 
 namespace ITDimkClicker.App
 {
-class IocConfiguration : NinjectModule
-{
-    public override void Load()
+    class IocConfiguration : NinjectModule
     {
-        Bind<IMacroFileManager>().To<MacroFileManager>().InSingletonScope(); // Reuse same storage every time
-        Bind<IConsoleAppWrapper>().To<ConsoleAppWrapper>().InSingletonScope();
-
-        Bind<MainViewModel>().ToSelf().InTransientScope(); // Create new instance every time
+        public override void Load()
+        {
+            Bind<IMacroFileManager>().To<MacroFileManager>().InSingletonScope(); // Reuse same storage every time
+            Bind<IConsoleAppWrapper>().ToConstant(new ConsoleAppWrapper("ITDimkClicker.ConsoleApp.lnk"));
+            Bind<MainViewModel>().ToSelf().InTransientScope(); // Create new instance every time
+        }
     }
-}
 }

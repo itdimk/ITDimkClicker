@@ -1,15 +1,17 @@
 ﻿using System.ComponentModel;
 using ITDimkClicker.App.Commands;
+using ITDimkClicker.App.Commands.Parameters;
 
 namespace ITDimkClicker.App.ViewModels
 {
     public interface IMainViewModel : INotifyPropertyChanged
     {
-        NewFileCommand NewFile { get; }
-        OpenFileCommand OpenFile { get; }
-        SaveFileCommand SaveFile { get; }
-        RunRecordCommand RunRecord { get; }
-        RunPlayCommand RunPlay { get; }
+        FileCreateCommand FileCreate { get; }
+        FileOpenCommand FileOpen { get; }
+        FileSaveCommand FileSave { get; }
+        RecordCommand Record { get; }
+        PlayCommand Play { get; }
+        CurrentFileAccessor CurrentFileAccessor { get; }
         string CurrentFile { get; }
         string State { get; }
     }

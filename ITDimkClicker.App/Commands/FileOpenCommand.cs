@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Windows.Input;
+using ITDimkClicker.App.Commands.Parameters;
 using ITDimkClicker.App.Services;
+using ITDimkClicker.Common.Services;
 using Microsoft.Win32;
 
 namespace ITDimkClicker.App.Commands
 {
-    public class OpenFileCommand : InactiveOnRunCommand
+    public class FileOpenCommand : BaseCommand
     {
-        public event EventHandler<string> FileSelected;
-
         public override void Execute(object parameter)
         {
             var dialog = new OpenFileDialog
@@ -19,10 +19,13 @@ namespace ITDimkClicker.App.Commands
             bool? result = dialog.ShowDialog();
 
             if (result == true)
-                FileSelected?.Invoke(this, dialog.FileName);
+            {
+                var accessor = (CurrentFileAccessor)parameter;
+                accessor.SetCurrentFile(dialog.FileName);
+            }
         }
 
-        public OpenFileCommand(IConsoleAppWrapper wrapper) : base(wrapper)
+        public FileOpenCommand(IConsoleAppWrapper wrapper) : base(wrapper)
         {
         }
     }

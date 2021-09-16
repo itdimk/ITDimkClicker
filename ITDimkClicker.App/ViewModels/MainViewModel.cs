@@ -7,8 +7,10 @@ using System.Threading;
 using System.Windows.Forms;
 using ITDimkClicker.App.Annotations;
 using ITDimkClicker.App.Commands;
+using ITDimkClicker.App.Commands.Parameters;
 using ITDimkClicker.App.Services;
 using ITDimkClicker.BL.Services;
+using ITDimkClicker.Common.Services;
 
 namespace ITDimkClicker.App.ViewModels
 {
@@ -18,11 +20,12 @@ namespace ITDimkClicker.App.ViewModels
         private string _currentFileName;
         private string _state = "Idle";
 
-        public NewFileCommand NewFile { get; }
-        public OpenFileCommand OpenFile { get; }
-        public SaveFileCommand SaveFile { get; }
-        public RunRecordCommand RunRecord { get; }
-        public RunPlayCommand RunPlay { get; }
+        public FileCreateCommand FileCreate { get; }
+        public FileOpenCommand FileOpen { get; }
+        public FileSaveCommand FileSave { get; }
+        public RecordCommand Record { get; }
+        public PlayCommand Play { get; }
+        public CurrentFileAccessor CurrentFileAccessor { get; } 
 
         public string CurrentFile
         {
@@ -46,26 +49,18 @@ namespace ITDimkClicker.App.ViewModels
             }
         }
 
-        public MainViewModel(IConsoleAppWrapper wrapper)
+        public MainViewModel(IConsoleAppWrapper wrapper, IMacroFileManager fileManager)
         {
-            OpenFile = new OpenFileCommand(wrapper);
-            OpenFile.FileSelected += (_, e) => CurrentFile = e;
-
-            SaveFile = new SaveFileCommand(wrapper);
-            SaveFile.FileSelected += (_, e) =>
-            {
-                File.Copy(CurrentFile, e, true);
-                CurrentFile = e;
-            };
-
-            NewFile = new NewFileCommand(wrapper);
-            NewFile.NewFileCreated += (_, e) => CurrentFile = e;
-            NewFile.Execute(new object());
-
-            RunPlay = new RunPlayCommand(wrapper);
-            RunRecord = new RunRecordCommand(wrapper);
+            CurrentFileAccessor = new CurrentFileAccessor((f) => CurrentFile = f, () => CurrentFile);
+            
+            FileCreate = new FileCreateCommand(wrapper, fileManager);
+            FileOpen = new FileOpenCommand(wrapper);
+            FileSave = new FileSaveCommand(wrapper);
+            Record = new RecordCommand(wrapper);
+            Play = new PlayCommand(wrapper);
 
             wrapper.IsRunningChanged += (sender, args) => State = wrapper.IsRunning ? "Working" : "Idle";
+            FileCreate.Execute(CurrentFileAccessor);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
