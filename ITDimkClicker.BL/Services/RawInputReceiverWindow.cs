@@ -8,7 +8,7 @@ namespace ITDimkClicker.BL.Services
 {
     public class RawInputReceiverWindow : NativeWindow, IRawInputReceiverWindow
     {
-        public event EventHandler<RawInputEventArgs> Input;
+        public event EventHandler<RawInputData> Input;
 
         public RawInputReceiverWindow()
         {
@@ -27,11 +27,7 @@ namespace ITDimkClicker.BL.Services
             const int WM_INPUT = 0x00FF;
 
             if (m.Msg == WM_INPUT)
-            {
-                var data = RawInputData.FromHandle(m.LParam);
-
-                Input?.Invoke(this, new RawInputEventArgs(data));
-            }
+                Input?.Invoke(this, RawInputData.FromHandle(m.LParam));
 
             base.WndProc(ref m);
         }

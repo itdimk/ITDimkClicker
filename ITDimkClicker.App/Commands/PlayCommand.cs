@@ -16,7 +16,7 @@ namespace ITDimkClicker.App.Commands
         public override void Execute(object parameter)
         {
             var accessor = (CurrentFileAccessor)parameter;
-            Wrapper.Run($"play -b S -bm Alt -i \"{accessor.GetCurrentFile}\"");
+            Wrapper.Run($"play -b S -bm Alt -i \"{accessor.GetCurrentFile()}\"");
         }
     }
 }

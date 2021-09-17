@@ -15,20 +15,20 @@ using Linearstar.Windows.RawInput.Native;
 
 namespace ITDimkClicker.BL.Services
 {
-    public class MacroPlayer : IMacroPlayer
+    public class MacroPlayerApp : IMacroPlayerApp
     {
         private readonly InputSimulator _simulator = new();
         private readonly List<VirtualKeyCode> _pressedKeys = new();
         private readonly Stopwatch _stopwatch = new();
 
-        private readonly Dictionary<RawMouseButtonFlags, MouseEvent.EventFlags> mouseButtonsMap = new()
+        private readonly Dictionary<RawMouseButtonFlags, MouseEvent.EventFlags> _mouseButtonsMap = new()
         {
-            {RawMouseButtonFlags.LeftButtonDown, MouseEvent.EventFlags.LEFTDOWN},
-            {RawMouseButtonFlags.LeftButtonUp, MouseEvent.EventFlags.LEFTUP},
-            {RawMouseButtonFlags.RightButtonDown, MouseEvent.EventFlags.RIGHTDOWN},
-            {RawMouseButtonFlags.RightButtonUp, MouseEvent.EventFlags.RIGHTUP},
-            {RawMouseButtonFlags.MiddleButtonDown, MouseEvent.EventFlags.MIDDLEDOWN},
-            {RawMouseButtonFlags.MiddleButtonUp, MouseEvent.EventFlags.MIDDLEUP}
+            { RawMouseButtonFlags.LeftButtonDown, MouseEvent.EventFlags.LEFTDOWN },
+            { RawMouseButtonFlags.LeftButtonUp, MouseEvent.EventFlags.LEFTUP },
+            { RawMouseButtonFlags.RightButtonDown, MouseEvent.EventFlags.RIGHTDOWN },
+            { RawMouseButtonFlags.RightButtonUp, MouseEvent.EventFlags.RIGHTUP },
+            { RawMouseButtonFlags.MiddleButtonDown, MouseEvent.EventFlags.MIDDLEDOWN },
+            { RawMouseButtonFlags.MiddleButtonUp, MouseEvent.EventFlags.MIDDLEUP }
         };
 
         private void PlayEvent(MacroEvent macroEvent)
@@ -41,7 +41,7 @@ namespace ITDimkClicker.BL.Services
 
         private void PlayKeyboardInputData(RawKeyboard keyboard)
         {
-            var vk = (VirtualKeyCode) keyboard.VirutalKey;
+            var vk = (VirtualKeyCode)keyboard.VirutalKey;
 
             if ((keyboard.Flags & RawKeyboardFlags.Up) != 0)
             {
@@ -64,18 +64,22 @@ namespace ITDimkClicker.BL.Services
             if (mouseData.ButtonData != 0)
                 MouseEvent.SendEvent(MouseEvent.EventFlags.WHEEL, 0, 0, mouseData.ButtonData);
 
-            foreach (var flags in mouseButtonsMap)
+            foreach (var flags in _mouseButtonsMap)
                 if (mouseData.Buttons.HasFlag(flags.Key))
                     MouseEvent.SendEvent(flags.Value, 0, 0);
         }
 
 
-        public void RunLoop(Macro macro, CancellationToken token)
+        public void Run(Macro[] macro, CancellationToken token)
         {
             void Loop()
             {
-                while (!token.IsCancellationRequested)
-                    PlayMacro(macro, token);
+                while (true)
+                    foreach (var m in macro)
+                    {
+                        PlayMacro(m, token);
+                        if (token.IsCancellationRequested) return;
+                    }
             }
 
             Task.Factory.StartNew(Loop, token);

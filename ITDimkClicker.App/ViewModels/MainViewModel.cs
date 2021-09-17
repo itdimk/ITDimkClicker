@@ -25,6 +25,7 @@ namespace ITDimkClicker.App.ViewModels
         public FileSaveCommand FileSave { get; }
         public RecordCommand Record { get; }
         public PlayCommand Play { get; }
+        public MergeCommand Merge { get; }
         public CurrentFileAccessor CurrentFileAccessor { get; } 
 
         public string CurrentFile
@@ -49,14 +50,15 @@ namespace ITDimkClicker.App.ViewModels
             }
         }
 
-        public MainViewModel(IConsoleAppWrapper wrapper, IMacroFileManager fileManager)
+        public MainViewModel(IConsoleAppWrapper wrapper, IMacroIO io)
         {
             CurrentFileAccessor = new CurrentFileAccessor((f) => CurrentFile = f, () => CurrentFile);
             
-            FileCreate = new FileCreateCommand(wrapper, fileManager);
+            FileCreate = new FileCreateCommand(wrapper, io);
             FileOpen = new FileOpenCommand(wrapper);
             FileSave = new FileSaveCommand(wrapper);
             Record = new RecordCommand(wrapper);
+            Merge = new MergeCommand(wrapper);
             Play = new PlayCommand(wrapper);
 
             wrapper.IsRunningChanged += (sender, args) => State = wrapper.IsRunning ? "Working" : "Idle";

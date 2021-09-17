@@ -4,8 +4,8 @@ using ITDimkClicker.Common.Data;
 
 namespace ITDimkClicker.Common.Services
 {
-    public interface IMacroPlayer : IDisposable
+    public interface IMacroRecorderApp : IDisposable
     {
-        void RunLoop(Macro macro, CancellationToken token);
+        Macro Run(CancellationToken token);
     }
 }

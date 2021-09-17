@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using ITDimkClicker.BL.Services;
 using ITDimkClicker.BL.Utility;
+using ITDimkClicker.Common.Data;
 using ITDimkClicker.Common.Services;
+using ITDImkClicker.ConsoleApp.Data;
 using ITDimkClicker.Recorder.Data;
 
 namespace ITDImkClicker.ConsoleApp
@@ -15,45 +18,67 @@ namespace ITDImkClicker.ConsoleApp
 
         static void Main()
         {
-            try
-            {
+            // try
+            // {
+                if (ArgsVariables.Mode == ArgsConstants.MERGE_MODE)
+                {
+                    RunMerge();
+                    return;
+                }
+
                 _cancel = new CancellationTokenSource();
                 _cancelHotkey = new CancellationHotkey(_cancel);
                 _cancelHotkey.Register(ArgsVariables.BreakHotkey, ArgsVariables.BreakModifier);
 
-                if (ArgsVariables.Mode == ArgsVariables.Actions.Play)
+                if (ArgsVariables.Mode == ArgsConstants.PLAY_MODE)
                     RunPlayer(_cancel.Token);
-                else if (ArgsVariables.Mode == ArgsVariables.Actions.Record)
+                else if (ArgsVariables.Mode == ArgsConstants.RECORD_MODE)
                     RunRecorder(_cancel.Token);
-            }
-            catch (Exception e)
+            // }
+            // catch (Exception e)
+            // {
+            //     Console.WriteLine(e.Message);
+            //     Console.WriteLine();
+            //     Console.WriteLine(e.StackTrace);
+            //     Thread.Sleep(5000);
+            // }
+        }
+
+        static void RunMerge()
+        {
+            var macro = new List<Macro>();
+            IMacroIO io = new MacroIO();
+            string[] files = ArgsVariables.InputFileNames;
+
+            foreach (string file in files)
             {
-                Console.WriteLine(e.Message);
-                Console.WriteLine();
-                Console.WriteLine(e.StackTrace);
-                Thread.Sleep(5000);
+                using var input = File.OpenRead(file);
+                macro.AddRange(io.ReadAll(input));
             }
+
+            using var output = File.OpenWrite(ArgsVariables.OutputFileName);
+            io.Write( output, macro.ToArray());
         }
 
         static void RunRecorder(CancellationToken token)
         {
-            IMacroRecorder recorder = new MacroRecorder(new RawInputReceiverWindow());
-            IMacroFileManager fileManager = new MacroFileManager();
+            IMacroRecorderApp recorderApp = new MacroRecorderApp(new RawInputReceiverWindow());
+            IMacroIO io = new MacroIO();
 
-            var macros = recorder.RunLoop(token);
+            var macro = recorderApp.Run(token);
             using var output = File.OpenWrite(ArgsVariables.OutputFileName);
-            fileManager.Write(macros, output);
+            io.Write(output, macro);
         }
 
         static void RunPlayer(CancellationToken token)
         {
-            IMacroPlayer player = new MacroPlayer();
-            IMacroFileManager fileManager = new MacroFileManager();
+            IMacroPlayerApp playerApp = new MacroPlayerApp();
+            IMacroIO io = new MacroIO();
 
             using var input = File.OpenRead(ArgsVariables.InputFileName);
-            var macros = fileManager.Read(input);
-            
-            player.RunLoop(macros, token);
+            var macros = io.ReadAll(input);
+
+            playerApp.Run(macros, token);
         }
     }
 }

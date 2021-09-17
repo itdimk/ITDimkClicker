@@ -35,6 +35,8 @@
                           CommandParameter="{Binding CurrentFileAccessor}" />
                 <MenuItem Header="Record" Command="{Binding Record}" 
                           CommandParameter="{Binding CurrentFileAccessor}" />
+                <MenuItem Header="Merge" Command="{Binding Merge}" 
+                          CommandParameter="{Binding CurrentFileAccessor}" />
             </MenuItem>
         </Menu>
 

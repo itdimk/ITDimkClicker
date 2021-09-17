@@ -10,7 +10,7 @@ namespace ITDimkClicker.App
     {
         public override void Load()
         {
-            Bind<IMacroFileManager>().To<MacroFileManager>().InSingletonScope(); // Reuse same storage every time
+            Bind<IMacroIO>().To<MacroIO>().InSingletonScope(); // Reuse same storage every time
             Bind<IConsoleAppWrapper>().ToConstant(new ConsoleAppWrapper("ITDimkClicker.ConsoleApp.lnk"));
             Bind<MainViewModel>().ToSelf().InTransientScope(); // Create new instance every time
         }

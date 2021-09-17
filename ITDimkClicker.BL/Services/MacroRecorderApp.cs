@@ -7,12 +7,12 @@ using Linearstar.Windows.RawInput;
 
 namespace ITDimkClicker.BL.Services
 {
-    public class MacroRecorder : IMacroRecorder
+    public class MacroRecorderApp : IMacroRecorderApp
     {
         private readonly IRawInputReceiverWindow _receiver;
         private readonly Stopwatch _stopwatch = new();
 
-        public MacroRecorder(IRawInputReceiverWindow receiver)
+        public MacroRecorderApp(IRawInputReceiverWindow receiver)
         {
             _receiver = receiver;
         }
@@ -31,10 +31,10 @@ namespace ITDimkClicker.BL.Services
             RawInputDevice.UnregisterDevice(HidUsageAndPage.Mouse);
         }
 
-        public Macro RunLoop(CancellationToken token)
+        public Macro Run(CancellationToken token)
         {
             var result = new Macro(Cursor.Position.X, Cursor.Position.Y);
-            _receiver.Input += (_, e) => AddMacroEvent(result, e.Data, token);
+            _receiver.Input += (_, e) => AddMacroEvent(result, e, token);
 
             try
             {

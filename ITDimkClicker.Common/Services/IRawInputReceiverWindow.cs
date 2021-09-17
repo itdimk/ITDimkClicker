@@ -1,11 +1,11 @@
 ﻿using System;
-using ITDimkClicker.Common.Data;
+using Linearstar.Windows.RawInput;
 
 namespace ITDimkClicker.Common.Services
 {
     public interface IRawInputReceiverWindow : IDisposable
     {
-        event EventHandler<RawInputEventArgs> Input;
+        event EventHandler<RawInputData> Input;
         IntPtr Handle { get; }
     }
 }

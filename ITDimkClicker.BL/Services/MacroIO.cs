@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using ITDimkClicker.Common.Data;
 using ITDimkClicker.Common.Services;
 using Linearstar.Windows.RawInput;
@@ -7,36 +8,52 @@ using ITDimkClicker.Common.Extensions;
 
 namespace ITDimkClicker.BL.Services
 {
-    public class MacroFileManager : IMacroFileManager
+    public class MacroIO : IMacroIO
     {
-        public void Write(Macro macros, Stream output)
+        public Macro[] ReadAll(Stream input)
         {
-            output.Write(macros.Count);
-            output.Write(macros.InitMouseX);
-            output.Write(macros.InitMouseY);
-            macros.ForEach(e => Write(e, output));
+            var result = new List<Macro>();
+            while (input.Position < input.Length)
+                result.Add(ReadOne(input));
+            return result.ToArray();
         }
 
-        public Macro Read(Stream input)
+        public Macro ReadOne(Stream input)
         {
             int count = input.Read<int>();
             int startX = input.Read<int>();
             int startY = input.Read<int>();
-            
+
             Macro result = new Macro(startX, startY);
-            
-            for(int i = 0; i < count; ++i)
+
+            for (int i = 0; i < count; ++i)
                 result.Add(ReadMacroEvent(input));
             return result;
         }
 
+        public void Write(Stream output, params Macro[] macros)
+        {
+            foreach (var m in macros)
+            {
+                output.Write(m.Count);
+                output.Write(m.InitMouseX);
+                output.Write(m.InitMouseY);
+                m.ForEach(e => WriteMacroEvent(e, output));
+            }
+        }
+        
         private MacroEvent ReadMacroEvent(Stream input)
         {
             var timestamp = input.Read<long>();
             var data = ReadRawInputData(input);
             return new MacroEvent(timestamp, data);
         }
-        
+
+        private void WriteMacroEvent(MacroEvent e, Stream output)
+        {
+            output.Write<long>(e.Timestamp);
+            WriteRawInputData(e.Data, output);
+        }
 
         private RawInputData ReadRawInputData(Stream input)
         {
@@ -51,13 +68,7 @@ namespace ITDimkClicker.BL.Services
             };
         }
 
-        private void Write(MacroEvent e, Stream output)
-        {
-            output.Write<long>(e.Timestamp);
-            Write(e.Data, output);
-        }
-        
-        private void Write(RawInputData data, Stream output)
+        private void WriteRawInputData(RawInputData data, Stream output)
         {
             byte[] buffer = data.ToStructure();
 

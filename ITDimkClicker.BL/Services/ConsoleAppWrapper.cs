@@ -35,7 +35,7 @@ namespace ITDimkClicker.App.Services
                 Arguments = args,
                 UseShellExecute = true,
                 CreateNoWindow = true,
-                WindowStyle = ProcessWindowStyle.Hidden
+//                WindowStyle = ProcessWindowStyle.Hidden
             };
 
             _appProcess = Process.Start(startInfo);

@@ -9,11 +9,11 @@ namespace ITDimkClicker.App.Commands
 {
     public class FileCreateCommand : BaseCommand
     {
-        private readonly IMacroFileManager _fileManager;
+        private readonly IMacroIO _io;
 
-        public FileCreateCommand(IConsoleAppWrapper wrapper, IMacroFileManager fileManager) : base(wrapper)
+        public FileCreateCommand(IConsoleAppWrapper wrapper, IMacroIO io) : base(wrapper)
         {
-            _fileManager = fileManager;
+            _io = io;
         }
 
         public override void Execute(object parameter)
@@ -24,8 +24,11 @@ namespace ITDimkClicker.App.Commands
             string fullPath = Path.Combine(Environment.CurrentDirectory, fileName);
             var macro = new Macro(0, 0);
 
+            if(File.Exists(fullPath))
+                File.Delete(fullPath);
+            
             using var output = File.OpenWrite(fullPath);
-            _fileManager.Write(macro, output);
+            _io.Write(output, macro);
             accessor.SetCurrentFile(fullPath);
         }
     }

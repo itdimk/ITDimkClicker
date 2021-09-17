@@ -11,6 +11,7 @@ namespace ITDimkClicker.App.ViewModels
         FileSaveCommand FileSave { get; }
         RecordCommand Record { get; }
         PlayCommand Play { get; }
+        MergeCommand Merge { get; }
         CurrentFileAccessor CurrentFileAccessor { get; }
         string CurrentFile { get; }
         string State { get; }

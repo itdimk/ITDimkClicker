@@ -1,23 +1,18 @@
 ﻿using System;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Windows.Forms;
 using ITDimkClicker.BL.Services;
 using ITDimkClicker.BL.Utility;
+using ITDimkClicker.Recorder.Data;
 
-namespace ITDimkClicker.Recorder.Data
+namespace ITDImkClicker.ConsoleApp.Data
 {
     static class ArgsVariables
     {
-        public enum Actions
-        {
-            Play,
-            Record
-        }
-
         public static string OutputFileName => ArgsVariableGetter.Get(ArgsConstants.OUTPUT, true);
         public static string InputFileName => ArgsVariableGetter.Get(ArgsConstants.INPUT, true);
-        
+        public static string[] InputFileNames => ArgsVariableGetter.GetMany(ArgsConstants.INPUT, true);
+        public static string Mode => ArgsVariableGetter.GetValueAt(1);
+
         public static Keys BreakHotkey
         {
             get
@@ -40,20 +35,5 @@ namespace ITDimkClicker.Recorder.Data
             }
         }
 
-        public static Actions Mode
-        {
-            get
-            {
-                string[] args = Environment.GetCommandLineArgs();
-
-                if (Array.IndexOf(args, ArgsConstants.PLAY_MODE) != -1)
-                    return Actions.Play;
-
-                if (Array.IndexOf(args, ArgsConstants.RECORD_MODE) != -1)
-                    return Actions.Record;
-
-                throw new Exception("\"play\" or \"record\" mode is expected");
-            }
-        }
     }
 }
