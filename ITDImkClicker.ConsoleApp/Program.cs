@@ -20,20 +20,20 @@ namespace ITDImkClicker.ConsoleApp
         {
             // try
             // {
-                if (ArgsVariables.Mode == ArgsConstants.MERGE_MODE)
-                {
-                    RunMerge();
-                    return;
-                }
+            if (ArgsVariables.Mode == ArgsConstants.MERGE_MODE)
+            {
+                RunMerge();
+                return;
+            }
 
-                _cancel = new CancellationTokenSource();
-                _cancelHotkey = new CancellationHotkey(_cancel);
-                _cancelHotkey.Register(ArgsVariables.BreakHotkey, ArgsVariables.BreakModifier);
+            _cancel = new CancellationTokenSource();
+            _cancelHotkey = new CancellationHotkey(_cancel);
+            _cancelHotkey.Register(ArgsVariables.BreakHotkey, ArgsVariables.BreakModifier);
 
-                if (ArgsVariables.Mode == ArgsConstants.PLAY_MODE)
-                    RunPlayer(_cancel.Token);
-                else if (ArgsVariables.Mode == ArgsConstants.RECORD_MODE)
-                    RunRecorder(_cancel.Token);
+            if (ArgsVariables.Mode == ArgsConstants.PLAY_MODE)
+                RunPlayer(_cancel.Token);
+            else if (ArgsVariables.Mode == ArgsConstants.RECORD_MODE)
+                RunRecorder(_cancel.Token);
             // }
             // catch (Exception e)
             // {
@@ -57,7 +57,7 @@ namespace ITDImkClicker.ConsoleApp
             }
 
             using var output = File.OpenWrite(ArgsVariables.OutputFileName);
-            io.Write( output, macro.ToArray());
+            io.Write(output, macro.ToArray());
         }
 
         static void RunRecorder(CancellationToken token)
@@ -66,6 +66,9 @@ namespace ITDImkClicker.ConsoleApp
             IMacroIO io = new MacroIO();
 
             var macro = recorderApp.Run(token);
+            if (File.Exists(ArgsVariables.OutputFileName))
+                File.Delete(ArgsVariables.OutputFileName);
+
             using var output = File.OpenWrite(ArgsVariables.OutputFileName);
             io.Write(output, macro);
         }

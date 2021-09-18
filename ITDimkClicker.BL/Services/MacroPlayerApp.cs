@@ -74,12 +74,10 @@ namespace ITDimkClicker.BL.Services
         {
             void Loop()
             {
-                while (true)
+                while (!token.IsCancellationRequested)
                     foreach (var m in macro)
-                    {
                         PlayMacro(m, token);
-                        if (token.IsCancellationRequested) return;
-                    }
+                Dispose();
             }
 
             Task.Factory.StartNew(Loop, token);
@@ -93,17 +91,13 @@ namespace ITDimkClicker.BL.Services
 
             foreach (var macroEvent in macro)
             {
+                if(token.IsCancellationRequested) return;
+                
                 long waitTime = macroEvent.Timestamp - _stopwatch.ElapsedTicks;
                 if (waitTime > 0)
                     Thread.Sleep(new TimeSpan(waitTime));
 
                 PlayEvent(macroEvent);
-
-                if (token.IsCancellationRequested)
-                {
-                    Dispose();
-                    return;
-                }
             }
         }
 
