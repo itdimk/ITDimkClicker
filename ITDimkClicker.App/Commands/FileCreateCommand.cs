@@ -11,7 +11,7 @@ namespace ITDimkClicker.App.Commands
     {
         private readonly IMacroIO _io;
 
-        public FileCreateCommand(IConsoleAppWrapper wrapper, IMacroIO io) : base(wrapper)
+        public FileCreateCommand(IConsoleAppRunner runner, IMacroIO io) : base(runner)
         {
             _io = io;
         }

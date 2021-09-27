@@ -2,11 +2,19 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
+using ITDimkClicker.BL.Services;
+using ITDimkClicker.BL.Utility;
+using ITDimkClicker.Common.Services;
+using ITDImkClicker.ConsoleApp.Data;
 using Ninject;
 using Ninject.Modules;
+using Application = System.Windows.Application;
 
 namespace ITDimkClicker.App
 {
@@ -26,6 +34,7 @@ namespace ITDimkClicker.App
 
             Current.MainWindow = _iocKernel.Get<MainWindow>();
             Current.MainWindow.Show();
+
         }
     }
 }

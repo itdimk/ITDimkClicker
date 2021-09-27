@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using ITDimkClicker.App.ViewModels;
 using ITDimkClicker.BL.Services;
+using ITDImkClicker.ConsoleApp.Data;
 
 namespace ITDimkClicker.App
 {

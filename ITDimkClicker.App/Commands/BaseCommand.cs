@@ -7,16 +7,16 @@ namespace ITDimkClicker.App.Commands
 {
     public abstract class BaseCommand : ICommand
     {
-        protected readonly IConsoleAppWrapper Wrapper;
+        protected readonly IConsoleAppRunner Runner;
         public event EventHandler CanExecuteChanged;
         
-        public BaseCommand(IConsoleAppWrapper wrapper)
+        public BaseCommand(IConsoleAppRunner runner)
         {
-            Wrapper = wrapper;
-            Wrapper.IsRunningChanged += (_, e) => CanExecuteChanged?.Invoke(this, e);
+            Runner = runner;
+            Runner.IsRunningChanged += (_, e) => CanExecuteChanged?.Invoke(this, e);
         }
 
-        public virtual bool CanExecute(object parameter) => !Wrapper.IsRunning;
+        public virtual bool CanExecute(object parameter) => !Runner.IsRunning;
         public abstract void Execute(object parameter);
 
     }

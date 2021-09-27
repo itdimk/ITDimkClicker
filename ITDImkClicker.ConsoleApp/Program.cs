@@ -8,6 +8,7 @@ using ITDimkClicker.Common.Data;
 using ITDimkClicker.Common.Services;
 using ITDImkClicker.ConsoleApp.Data;
 using ITDimkClicker.Recorder.Data;
+using WindowsInput;
 
 namespace ITDImkClicker.ConsoleApp
 {
@@ -26,14 +27,18 @@ namespace ITDImkClicker.ConsoleApp
                 return;
             }
 
-            _cancel = new CancellationTokenSource();
-            _cancelHotkey = new CancellationHotkey(_cancel);
-            _cancelHotkey.Register(ArgsVariables.BreakHotkey, ArgsVariables.BreakModifier);
 
             if (ArgsVariables.Mode == ArgsConstants.PLAY_MODE)
+            {
+                _cancel = new CancellationTokenSource();
+                _cancelHotkey = new CancellationHotkey(_cancel);
+                _cancelHotkey.Register(ArgsVariables.BreakHotkey, ArgsVariables.BreakModifier);
                 RunPlayer(_cancel.Token);
+            }
             else if (ArgsVariables.Mode == ArgsConstants.RECORD_MODE)
-                RunRecorder(_cancel.Token);
+            {
+                RunRecorder();
+            }
             // }
             // catch (Exception e)
             // {
@@ -56,16 +61,16 @@ namespace ITDImkClicker.ConsoleApp
                 macro.AddRange(io.ReadAll(input));
             }
 
-            using var output = File.OpenWrite(ArgsVariables.OutputFileName);
+            using var output = File.Open(ArgsVariables.OutputFileName, FileMode.Append);
             io.Write(output, macro.ToArray());
         }
 
-        static void RunRecorder(CancellationToken token)
+        static void RunRecorder()
         {
-            IMacroRecorderApp recorderApp = new MacroRecorderApp(new RawInputReceiverWindow());
+            using IMacroRecorderApp recorderApp = new MacroRecorderApp(new RawInputReceiverWindow());
             IMacroIO io = new MacroIO();
 
-            var macro = recorderApp.Run(token);
+            var macro = recorderApp.Run(ArgsVariables.BreakHotkey, ArgsVariables.BreakModifier);
             if (File.Exists(ArgsVariables.OutputFileName))
                 File.Delete(ArgsVariables.OutputFileName);
 
@@ -75,7 +80,8 @@ namespace ITDImkClicker.ConsoleApp
 
         static void RunPlayer(CancellationToken token)
         {
-            IMacroPlayerApp playerApp = new MacroPlayerApp();
+            var simulator = new InputSimulator();
+            using MacroPlayer playerApp = new MacroPlayerApp(new MacroEventPlayer(simulator));
             IMacroIO io = new MacroIO();
 
             using var input = File.OpenRead(ArgsVariables.InputFileName);

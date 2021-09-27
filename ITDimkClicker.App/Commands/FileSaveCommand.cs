@@ -10,7 +10,7 @@ namespace ITDimkClicker.App.Commands
 {
     public class FileSaveCommand : BaseCommand
     {
-        public FileSaveCommand(IConsoleAppWrapper wrapper) : base(wrapper)
+        public FileSaveCommand(IConsoleAppRunner runner) : base(runner)
         {
         }
 

@@ -7,7 +7,7 @@ namespace ITDimkClicker.App.Commands
 {
     public class MergeCommand : BaseCommand
     {
-        public MergeCommand(IConsoleAppWrapper wrapper) : base(wrapper)
+        public MergeCommand(IConsoleAppRunner runner) : base(runner)
         {
         }
 
@@ -28,7 +28,7 @@ namespace ITDimkClicker.App.Commands
                 string inputFiles = dialog.FileNames.Select(f => " -i " + f)
                     .Aggregate((result, item) => result + item);
                 
-                Wrapper.Run($"merge -o \"{accessor.GetCurrentFile()}\" {inputFiles}");
+                Runner.Run($"merge -o \"{accessor.GetCurrentFile()}\" {inputFiles}");
             }
         }
     }

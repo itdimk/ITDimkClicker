@@ -9,14 +9,14 @@ namespace ITDimkClicker.App.Commands
 {
     public class RecordCommand : BaseCommand
     {
-        public RecordCommand(IConsoleAppWrapper wrapper) : base(wrapper)
+        public RecordCommand(IConsoleAppRunner runner) : base(runner)
         {
         }
 
         public override void Execute(object parameter)
         {
             var accessor = (CurrentFileAccessor)parameter;
-            Wrapper.Run($"record -b S -bm Alt -o \"{accessor.GetCurrentFile()}\"");
+            Runner.Run($"record -b S -bm Alt -o \"{accessor.GetCurrentFile()}\"");
         }
     }
 }

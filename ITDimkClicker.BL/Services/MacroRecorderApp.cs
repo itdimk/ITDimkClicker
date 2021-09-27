@@ -1,9 +1,11 @@
-﻿using System.Diagnostics;
-using System.Threading;
+﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using ITDimkClicker.Common.Data;
 using ITDimkClicker.Common.Services;
+using ITDImkClicker.ConsoleApp.Data;
 using Linearstar.Windows.RawInput;
+using Linearstar.Windows.RawInput.Native;
 
 namespace ITDimkClicker.BL.Services
 {
@@ -11,6 +13,9 @@ namespace ITDimkClicker.BL.Services
     {
         private readonly IRawInputReceiverWindow _receiver;
         private readonly Stopwatch _stopwatch = new();
+        private ModifKeys ModifiersPressed;
+        private Macro temp;
+
 
         public MacroRecorderApp(IRawInputReceiverWindow receiver)
         {
@@ -31,10 +36,10 @@ namespace ITDimkClicker.BL.Services
             RawInputDevice.UnregisterDevice(HidUsageAndPage.Mouse);
         }
 
-        public Macro Run(CancellationToken token)
+        public Macro Run(Keys breakKey, ModifKeys breakModifier)
         {
             var result = new Macro(Cursor.Position.X, Cursor.Position.Y);
-            _receiver.Input += (_, e) => AddMacroEvent(result, e, token);
+            _receiver.Input += (_, e) => AddMacroEvent(result, e, breakKey, breakModifier);
 
             try
             {
@@ -46,17 +51,53 @@ namespace ITDimkClicker.BL.Services
             {
                 Dispose();
             }
+
             return result;
         }
 
-        void AddMacroEvent(Macro result, RawInputData data, CancellationToken token)
+        void AddMacroEvent(Macro result, RawInputData data, Keys breakKey, ModifKeys breakModifier)
         {
-            if (!token.IsCancellationRequested)
+            SetPressedModifiers(data);
+            if (!IsCancellationRequired(data, breakKey, breakModifier))
                 result.Add(new MacroEvent(_stopwatch.ElapsedTicks, data));
             else
                 Dispose();
         }
 
+        void SetPressedModifiers(RawInputData data)
+        {
+            if (data is not RawInputKeyboardData keyboardData) return;
+            bool isKeyDown = !keyboardData.Keyboard.Flags.HasFlag(RawKeyboardFlags.Up);
+
+            void SetModifier(ModifKeys key)
+            {
+                if (isKeyDown)
+                    ModifiersPressed |= key;
+                else
+                    ModifiersPressed &= ~ModifKeys.Alt;
+            }
+
+            switch (keyboardData.Keyboard.VirutalKey)
+            {
+                case 0x12: // VK_MENU
+                    SetModifier(ModifKeys.Alt);
+                    break;
+                case 0x11: // VK_CONTROL
+                    SetModifier(ModifKeys.Control);
+                    break;
+                case 0x10: // VK_SHIFT
+                    SetModifier(ModifKeys.Shift);
+                    break;
+            }
+        }
+
+        private bool IsCancellationRequired(RawInputData data, Keys breakKey, ModifKeys breakModifier)
+        {
+            if (data is RawInputKeyboardData keyboardData)
+                return ModifiersPressed == breakModifier && keyboardData.Keyboard.VirutalKey == (int)breakKey;
+            return false;
+        }
+        
         public void Dispose()
         {
             UnregisterDevices();

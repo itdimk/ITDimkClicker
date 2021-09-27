@@ -1,112 +1,83 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsInput;
 using WindowsInput.Native;
 using ITDimkClicker.Common.Data;
 using ITDimkClicker.Common.Services;
-using ITDimkClicker.BL.Win32;
 using Linearstar.Windows.RawInput;
 using Linearstar.Windows.RawInput.Native;
 
 namespace ITDimkClicker.BL.Services
 {
-    public class MacroPlayerApp : IMacroPlayerApp
+    public class MacroPlayerApp : MacroPlayer
     {
-        private readonly InputSimulator _simulator = new();
-        private readonly List<VirtualKeyCode> _pressedKeys = new();
         private readonly Stopwatch _stopwatch = new();
+        private HashSet<VirtualKeyCode> _pressedKeys = new();
 
-        private readonly Dictionary<RawMouseButtonFlags, MouseEvent.EventFlags> _mouseButtonsMap = new()
+        public MacroPlayerApp(IMacroEventPlayer player) : base(player)
         {
-            { RawMouseButtonFlags.LeftButtonDown, MouseEvent.EventFlags.LEFTDOWN },
-            { RawMouseButtonFlags.LeftButtonUp, MouseEvent.EventFlags.LEFTUP },
-            { RawMouseButtonFlags.RightButtonDown, MouseEvent.EventFlags.RIGHTDOWN },
-            { RawMouseButtonFlags.RightButtonUp, MouseEvent.EventFlags.RIGHTUP },
-            { RawMouseButtonFlags.MiddleButtonDown, MouseEvent.EventFlags.MIDDLEDOWN },
-            { RawMouseButtonFlags.MiddleButtonUp, MouseEvent.EventFlags.MIDDLEUP }
-        };
-
-        private void PlayEvent(MacroEvent macroEvent)
-        {
-            if (macroEvent.Data is RawInputKeyboardData keyboardData)
-                PlayKeyboardInputData(keyboardData.Keyboard);
-            else if (macroEvent.Data is RawInputMouseData mouseData)
-                PlayMouseInputData(mouseData.Mouse);
         }
 
-        private void PlayKeyboardInputData(RawKeyboard keyboard)
+        public override void Run(Macro[] macros, CancellationToken token)
         {
-            var vk = (VirtualKeyCode)keyboard.VirutalKey;
-
-            if ((keyboard.Flags & RawKeyboardFlags.Up) != 0)
-            {
-                _simulator.Keyboard.KeyUp(vk);
-                _pressedKeys.Remove(vk);
-            }
-            else
-            {
-                _simulator.Keyboard.KeyDown(vk);
-                if (!_pressedKeys.Contains(vk))
-                    _pressedKeys.Add(vk);
-            }
-        }
-
-        private void PlayMouseInputData(RawMouse mouseData)
-        {
-            if (mouseData.LastX != 0 || mouseData.LastY != 0)
-                MouseEvent.SendEvent(MouseEvent.EventFlags.MOVE, mouseData.LastX, mouseData.LastY);
-
-            if (mouseData.ButtonData != 0)
-                MouseEvent.SendEvent(MouseEvent.EventFlags.WHEEL, 0, 0, mouseData.ButtonData);
-
-            foreach (var flags in _mouseButtonsMap)
-                if (mouseData.Buttons.HasFlag(flags.Key))
-                    MouseEvent.SendEvent(flags.Value, 0, 0);
-        }
-
-
-        public void Run(Macro[] macro, CancellationToken token)
-        {
-            void Loop()
-            {
-                while (!token.IsCancellationRequested)
-                    foreach (var m in macro)
-                        PlayMacro(m, token);
-                Dispose();
-            }
-
-            Task.Factory.StartNew(Loop, token);
+            Task.Factory.StartNew(() => RunAll(macros, token), token);
             Application.Run();
         }
 
-        private void PlayMacro(Macro macro, CancellationToken token)
+        private void RunAll(Macro[] macros, CancellationToken token)
+        {
+            while (true)
+                foreach (var macro in macros)
+                {
+                    if (token.IsCancellationRequested)
+                    {
+                        Dispose();
+                        return;
+                    }
+
+                    RunOne(macro, token);
+                }
+        }
+
+        private void RunOne(Macro macro, CancellationToken token)
         {
             Cursor.Position = new Point(macro.InitMouseX, macro.InitMouseY);
             _stopwatch.Restart();
 
             foreach (var macroEvent in macro)
-            {
-                if(token.IsCancellationRequested) return;
-                
-                long waitTime = macroEvent.Timestamp - _stopwatch.ElapsedTicks;
-                if (waitTime > 0)
-                    Thread.Sleep(new TimeSpan(waitTime));
+                if (!token.IsCancellationRequested)
+                {
+                    EventPlayer.Play(macroEvent, macroEvent.Timestamp - _stopwatch.ElapsedTicks);
+                    UpdatePressedKeys(macroEvent);
+                }
 
-                PlayEvent(macroEvent);
-            }
+            ReleasePressedKeys();
         }
 
-        public void Dispose()
+        private void UpdatePressedKeys(MacroEvent e)
         {
-            MouseEvent.SendEvent(MouseEvent.EventFlags.LEFTUP, 0, 0);
-            MouseEvent.SendEvent(MouseEvent.EventFlags.RIGHTUP, 0, 0);
-            MouseEvent.SendEvent(MouseEvent.EventFlags.MIDDLEUP, 0, 0);
-            _pressedKeys.ForEach(k => _simulator.Keyboard.KeyUp(k));
+            if (e.Data is not RawInputKeyboardData keyboardData) return;
+
+            var vKeyCode = (VirtualKeyCode)keyboardData.Keyboard.VirutalKey;
+
+            if (keyboardData.Keyboard.Flags == RawKeyboardFlags.Up)
+                _pressedKeys.Remove(vKeyCode);
+            else
+                _pressedKeys.Add(vKeyCode);
+        }
+
+        private void ReleasePressedKeys()
+        {
+            foreach (var key in _pressedKeys)
+                EventPlayer.ReleaseKey((int)key);
+        }
+
+        public override void Dispose()
+        {
+            ReleasePressedKeys();
             Application.Exit();
         }
     }

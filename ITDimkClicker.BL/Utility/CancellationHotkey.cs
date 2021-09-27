@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Windows.Forms;
 using ITDimkClicker.BL.Services;
+using ITDImkClicker.ConsoleApp.Data;
 
 namespace ITDimkClicker.BL.Utility
 {

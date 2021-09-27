@@ -9,14 +9,14 @@ namespace ITDimkClicker.App.Commands
 {
     public class PlayCommand : BaseCommand
     {
-        public PlayCommand(IConsoleAppWrapper wrapper) : base(wrapper)
+        public PlayCommand(IConsoleAppRunner runner) : base(runner)
         {
         }
 
         public override void Execute(object parameter)
         {
             var accessor = (CurrentFileAccessor)parameter;
-            Wrapper.Run($"play -b S -bm Alt -i \"{accessor.GetCurrentFile()}\"");
+            Runner.Run($"play -b S -bm Alt -i \"{accessor.GetCurrentFile()}\"");
         }
     }
 }

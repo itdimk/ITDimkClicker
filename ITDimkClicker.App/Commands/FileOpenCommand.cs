@@ -25,7 +25,7 @@ namespace ITDimkClicker.App.Commands
             }
         }
 
-        public FileOpenCommand(IConsoleAppWrapper wrapper) : base(wrapper)
+        public FileOpenCommand(IConsoleAppRunner runner) : base(runner)
         {
         }
     }

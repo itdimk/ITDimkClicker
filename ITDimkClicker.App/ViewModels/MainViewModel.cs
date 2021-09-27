@@ -50,18 +50,18 @@ namespace ITDimkClicker.App.ViewModels
             }
         }
 
-        public MainViewModel(IConsoleAppWrapper wrapper, IMacroIO io)
+        public MainViewModel(IConsoleAppRunner runner, IMacroIO io)
         {
             CurrentFileAccessor = new CurrentFileAccessor((f) => CurrentFile = f, () => CurrentFile);
             
-            FileCreate = new FileCreateCommand(wrapper, io);
-            FileOpen = new FileOpenCommand(wrapper);
-            FileSave = new FileSaveCommand(wrapper);
-            Record = new RecordCommand(wrapper);
-            Merge = new MergeCommand(wrapper);
-            Play = new PlayCommand(wrapper);
+            FileCreate = new FileCreateCommand(runner, io);
+            FileOpen = new FileOpenCommand(runner);
+            FileSave = new FileSaveCommand(runner);
+            Record = new RecordCommand(runner);
+            Merge = new MergeCommand(runner);
+            Play = new PlayCommand(runner);
 
-            wrapper.IsRunningChanged += (sender, args) => State = wrapper.IsRunning ? "Working" : "Idle";
+            runner.IsRunningChanged += (sender, args) => State = runner.IsRunning ? "Working" : "Idle";
             FileCreate.Execute(CurrentFileAccessor);
         }
 
