@@ -58,16 +58,23 @@ namespace ITDimkClicker.BL.Services
 
             if (mButtons == default) return;
 
-            var _ = mButtons switch
-            {
-                RawMouseButtonFlags.LeftButtonDown => _simulator.Mouse.LeftButtonDown(),
-                RawMouseButtonFlags.RightButtonDown => _simulator.Mouse.RightButtonDown(),
-                RawMouseButtonFlags.MiddleButtonDown => _simulator.Mouse.MiddleButtonDown(),
-
-                RawMouseButtonFlags.LeftButtonUp => _simulator.Mouse.LeftButtonUp(),
-                RawMouseButtonFlags.RightButtonUp => _simulator.Mouse.RightButtonUp(),
-                RawMouseButtonFlags.MiddleButtonUp => _simulator.Mouse.MiddleButtonUp(),
-            };
+            if (mButtons.HasFlag(RawMouseButtonFlags.LeftButtonDown))
+                _simulator.Mouse.LeftButtonDown();
+            
+            if (mButtons.HasFlag(RawMouseButtonFlags.RightButtonDown))
+                _simulator.Mouse.RightButtonDown();
+            
+            if (mButtons.HasFlag(RawMouseButtonFlags.MiddleButtonDown))
+                _simulator.Mouse.MiddleButtonDown();
+            
+            if (mButtons.HasFlag(RawMouseButtonFlags.LeftButtonUp))
+                _simulator.Mouse.LeftButtonUp();
+            
+            if (mButtons.HasFlag(RawMouseButtonFlags.RightButtonUp))
+                _simulator.Mouse.RightButtonUp();
+            
+            if (mButtons.HasFlag(RawMouseButtonFlags.MiddleButtonUp))
+                _simulator.Mouse.MiddleButtonUp();
         }
     }
 }

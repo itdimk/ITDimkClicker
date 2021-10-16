@@ -43,8 +43,8 @@ namespace ITDimkClicker.BL.Services
 
             try
             {
-                _stopwatch.Restart();
                 RegisterDevices();
+                _stopwatch.Restart();
                 Application.Run();
             }
             finally
@@ -74,7 +74,7 @@ namespace ITDimkClicker.BL.Services
                 if (isKeyDown)
                     ModifiersPressed |= key;
                 else
-                    ModifiersPressed &= ~ModifKeys.Alt;
+                    ModifiersPressed &= ~key;
             }
 
             switch (keyboardData.Keyboard.VirutalKey)
@@ -94,7 +94,7 @@ namespace ITDimkClicker.BL.Services
         private bool IsCancellationRequired(RawInputData data, Keys breakKey, ModifKeys breakModifier)
         {
             if (data is RawInputKeyboardData keyboardData)
-                return ModifiersPressed == breakModifier && keyboardData.Keyboard.VirutalKey == (int)breakKey;
+                return ModifiersPressed.HasFlag(breakModifier) && keyboardData.Keyboard.VirutalKey == (int)breakKey;
             return false;
         }
         

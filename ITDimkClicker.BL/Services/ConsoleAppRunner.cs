@@ -36,7 +36,9 @@ namespace ITDimkClicker.App.Services
                 Arguments = args,
                 FileName = _appPath,
                 UseShellExecute = true,
-                
+               WindowStyle = ProcessWindowStyle.Hidden,
+               CreateNoWindow = true,
+               
             };
 
             try

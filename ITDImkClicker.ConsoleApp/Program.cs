@@ -19,8 +19,8 @@ namespace ITDImkClicker.ConsoleApp
 
         static void Main()
         {
-            // try
-            // {
+            try
+            {
             if (ArgsVariables.Mode == ArgsConstants.MERGE_MODE)
             {
                 RunMerge();
@@ -39,14 +39,14 @@ namespace ITDImkClicker.ConsoleApp
             {
                 RunRecorder();
             }
-            // }
-            // catch (Exception e)
-            // {
-            //     Console.WriteLine(e.Message);
-            //     Console.WriteLine();
-            //     Console.WriteLine(e.StackTrace);
-            //     Thread.Sleep(5000);
-            // }
+            }
+            catch (Exception e)
+            {
+                string text = e.Message + "\n" + e.StackTrace + "\n" + e;
+                File.WriteAllText("log.txt", text);
+                Console.WriteLine("App crashed. See log.txt for details");
+                Thread.Sleep(3000);
+            }
         }
 
         static void RunMerge()
