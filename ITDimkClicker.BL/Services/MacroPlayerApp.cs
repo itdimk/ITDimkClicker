@@ -73,6 +73,7 @@ namespace ITDimkClicker.BL.Services
         {
             foreach (var key in _pressedKeys)
                 EventPlayer.ReleaseKey((int)key);
+            _pressedKeys.Clear();
         }
 
         public override void Dispose()
