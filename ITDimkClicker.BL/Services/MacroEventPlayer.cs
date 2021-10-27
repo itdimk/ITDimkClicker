@@ -21,13 +21,14 @@ namespace ITDimkClicker.BL.Services
 
         public void Play(MacroEvent target, long waitTime)
         {
+            if (waitTime > 0)
+                Thread.Sleep(new TimeSpan(waitTime));
+            
             if (target.Data is RawInputKeyboardData keyboardData)
                 PlayKeyboardInputData(keyboardData.Keyboard);
             else if (target.Data is RawInputMouseData mouseData)
                 PlayMouseInputData(mouseData.Mouse);
 
-            if (waitTime > 0)
-                Thread.Sleep(new TimeSpan(waitTime));
         }
 
         public void ReleaseKey(int vKeyCode)
