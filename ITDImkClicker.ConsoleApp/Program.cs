@@ -21,24 +21,24 @@ namespace ITDImkClicker.ConsoleApp
         {
             try
             {
-            if (ArgsVariables.Mode == ArgsConstants.MERGE_MODE)
-            {
-                RunMerge();
-                return;
-            }
+                if (ArgsVariables.Mode == ArgsConstants.MERGE_MODE)
+                {
+                    RunMerge();
+                    return;
+                }
 
 
-            if (ArgsVariables.Mode == ArgsConstants.PLAY_MODE)
-            {
-                _cancel = new CancellationTokenSource();
-                _cancelHotkey = new CancellationHotkey(_cancel);
-                _cancelHotkey.Register(ArgsVariables.BreakHotkey, ArgsVariables.BreakModifier);
-                RunPlayer(_cancel.Token);
-            }
-            else if (ArgsVariables.Mode == ArgsConstants.RECORD_MODE)
-            {
-                RunRecorder();
-            }
+                if (ArgsVariables.Mode == ArgsConstants.PLAY_MODE)
+                {
+                    _cancel = new CancellationTokenSource();
+                    _cancelHotkey = new CancellationHotkey(_cancel);
+                    _cancelHotkey.Register(ArgsVariables.BreakHotkey, ArgsVariables.BreakModifier);
+                    RunPlayer(_cancel.Token);
+                }
+                else if (ArgsVariables.Mode == ArgsConstants.RECORD_MODE)
+                {
+                    RunRecorder();
+                }
             }
             catch (Exception e)
             {
@@ -87,7 +87,7 @@ namespace ITDImkClicker.ConsoleApp
             using var input = File.OpenRead(ArgsVariables.InputFileName);
             var macros = io.ReadAll(input);
 
-            playerApp.Run(macros, token);
+            playerApp.Run(macros, token, ArgsVariables.Speed);
         }
     }
 }

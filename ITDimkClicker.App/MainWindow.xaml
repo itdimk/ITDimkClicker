@@ -11,7 +11,7 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
@@ -23,19 +23,19 @@
 
         <Menu Grid.ColumnSpan="2">
             <MenuItem Header="File">
-                <MenuItem Header="New" Command="{Binding FileCreate}" 
+                <MenuItem Header="New" Command="{Binding FileCreate}"
                           CommandParameter="{Binding CurrentFileAccessor}" />
-                <MenuItem Header="Open" Command="{Binding FileOpen}" 
+                <MenuItem Header="Open" Command="{Binding FileOpen}"
                           CommandParameter="{Binding CurrentFileAccessor}" />
                 <MenuItem Header="Save as" Command="{Binding FileSave}"
                           CommandParameter="{Binding CurrentFileAccessor}" />
             </MenuItem>
             <MenuItem Header="Actions">
-                <MenuItem Header="Play" Command="{Binding Play}" 
+                <MenuItem Header="Play" Command="{Binding Play}"
                           CommandParameter="{Binding CurrentFileAccessor}" />
-                <MenuItem Header="Record" Command="{Binding Record}" 
+                <MenuItem Header="Record" Command="{Binding Record}"
                           CommandParameter="{Binding CurrentFileAccessor}" />
-                <MenuItem Header="Append" Command="{Binding Merge}" 
+                <MenuItem Header="Append" Command="{Binding Merge}"
                           CommandParameter="{Binding CurrentFileAccessor}" />
             </MenuItem>
         </Menu>
@@ -44,10 +44,15 @@
                    VerticalAlignment="Center"
                    Text="{Binding State}" />
 
-        <StatusBar Grid.Row="2" Grid.ColumnSpan="2" DockPanel.Dock="Bottom">
+
+        <StatusBar Grid.Row="2" DockPanel.Dock="Bottom">
             <StatusBarItem>
                 <TextBlock Text="{Binding CurrentFile, Converter={StaticResource fileNameConverter}}" />
             </StatusBarItem>
         </StatusBar>
+
+        <TextBox Grid.Row="2" Grid.Column="1"
+                 Text="{Binding Speed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,StringFormat=N1}"
+                 TextAlignment="Center" />
     </Grid>
 </Window>

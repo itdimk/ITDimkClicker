@@ -9,5 +9,6 @@
         public static string PLAY_MODE = "play";
         public static string RECORD_MODE = "record";
         public static string MERGE_MODE = "merge";
+        public static string SPEED = "-s";
     }
 }

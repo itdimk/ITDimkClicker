@@ -15,5 +15,6 @@ namespace ITDimkClicker.App.ViewModels
         CurrentFileAccessor CurrentFileAccessor { get; }
         string CurrentFile { get; }
         string State { get; }
+        float Speed { get; set; }
     }
 }

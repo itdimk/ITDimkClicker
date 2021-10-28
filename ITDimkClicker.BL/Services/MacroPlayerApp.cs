@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
@@ -21,13 +22,13 @@ namespace ITDimkClicker.BL.Services
         {
         }
 
-        public override void Run(Macro[] macros, CancellationToken token)
+        public override void Run(Macro[] macros, CancellationToken token, float speed = 1f)
         {
-            Task.Factory.StartNew(() => RunAll(macros, token), token);
+            Task.Factory.StartNew(() => RunAll(macros, token, speed), token);
             Application.Run();
         }
 
-        private void RunAll(Macro[] macros, CancellationToken token)
+        private void RunAll(Macro[] macros, CancellationToken token, float speed)
         {
             while (true)
                 foreach (var macro in macros)
@@ -38,11 +39,11 @@ namespace ITDimkClicker.BL.Services
                         return;
                     }
 
-                    RunOne(macro, token);
+                    RunOne(macro, token, speed);
                 }
         }
 
-        private void RunOne(Macro macro, CancellationToken token)
+        private void RunOne(Macro macro, CancellationToken token, float speed)
         {
             Cursor.Position = new Point(macro.InitMouseX, macro.InitMouseY);
             _stopwatch.Restart();
@@ -50,7 +51,9 @@ namespace ITDimkClicker.BL.Services
             foreach (var macroEvent in macro)
                 if (!token.IsCancellationRequested)
                 {
-                    EventPlayer.Play(macroEvent, macroEvent.Timestamp - _stopwatch.ElapsedTicks);
+                    long elapsedTicks = (long) Math.Round(_stopwatch.ElapsedTicks * (decimal) speed);
+                    long waitTime = macroEvent.Timestamp - elapsedTicks;
+                    EventPlayer.Play(macroEvent, waitTime);
                     UpdatePressedKeys(macroEvent);
                 }
 
@@ -61,7 +64,7 @@ namespace ITDimkClicker.BL.Services
         {
             if (e.Data is not RawInputKeyboardData keyboardData) return;
 
-            var vKeyCode = (VirtualKeyCode)keyboardData.Keyboard.VirutalKey;
+            var vKeyCode = (VirtualKeyCode) keyboardData.Keyboard.VirutalKey;
 
             if (keyboardData.Keyboard.Flags == RawKeyboardFlags.Up)
                 _pressedKeys.Remove(vKeyCode);
@@ -72,7 +75,7 @@ namespace ITDimkClicker.BL.Services
         private void ReleasePressedKeys()
         {
             foreach (var key in _pressedKeys)
-                EventPlayer.ReleaseKey((int)key);
+                EventPlayer.ReleaseKey((int) key);
             _pressedKeys.Clear();
         }
 

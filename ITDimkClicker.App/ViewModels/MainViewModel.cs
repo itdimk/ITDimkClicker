@@ -50,9 +50,21 @@ namespace ITDimkClicker.App.ViewModels
             }
         }
 
+        public float Speed
+        {
+            get => CurrentFileAccessor?.PlayingSpeed ?? 1f;
+            set
+            {
+                if(CurrentFileAccessor == null) return;
+                if (value.Equals(CurrentFileAccessor.PlayingSpeed)) return;
+                CurrentFileAccessor.PlayingSpeed = value;
+                OnPropertyChanged();
+            }
+        }
+
         public MainViewModel(IConsoleAppRunner runner, IMacroIO io)
         {
-            CurrentFileAccessor = new CurrentFileAccessor((f) => CurrentFile = f, () => CurrentFile);
+            CurrentFileAccessor = new CurrentFileAccessor((f) => CurrentFile = f, () => CurrentFile, Speed);
             
             FileCreate = new FileCreateCommand(runner, io);
             FileOpen = new FileOpenCommand(runner);

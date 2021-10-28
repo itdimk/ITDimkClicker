@@ -13,7 +13,7 @@ namespace ITDimkClicker.Common.Services
             EventPlayer = _eventPlayer;
         } 
         
-        public abstract void Run(Macro[] macro, CancellationToken token);
+        public abstract void Run(Macro[] macro, CancellationToken token, float speed = 1f);
         public abstract void Dispose();
         
     }

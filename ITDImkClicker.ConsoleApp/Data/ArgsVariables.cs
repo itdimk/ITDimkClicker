@@ -13,6 +13,22 @@ namespace ITDImkClicker.ConsoleApp.Data
         public static string[] InputFileNames => ArgsVariableGetter.GetMany(ArgsConstants.INPUT, true);
         public static string Mode => ArgsVariableGetter.GetValueAt(1);
 
+        public static float Speed
+        {
+            get
+            {
+                string value = ArgsVariableGetter.Get(ArgsConstants.SPEED, false);
+                
+                if (string.IsNullOrWhiteSpace(value))
+                    return 1f;
+                
+                if (float.TryParse(value, out float result))
+                    return result;
+                
+                throw new Exception($"Invalid speed: {value}");
+            }
+        }
+
         public static Keys BreakHotkey
         {
             get
@@ -34,6 +50,5 @@ namespace ITDImkClicker.ConsoleApp.Data
                     : throw new Exception($"Invalid break modifier: {value}");
             }
         }
-
     }
 }
