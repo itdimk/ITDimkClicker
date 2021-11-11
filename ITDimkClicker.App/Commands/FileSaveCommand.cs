@@ -25,9 +25,11 @@ namespace ITDimkClicker.App.Commands
 
             if (result == true)
             {
-                var accessor = (CurrentFileAccessor)parameter;
-                File.Copy(accessor.GetCurrentFile(), dialog.FileName, true);
-                accessor.SetCurrentFile(dialog.FileName);
+                string fileName = dialog.FileName;
+                var accessor = (CurrentFileAccessor) parameter;
+                Runner.Run($"merge -i \"{accessor.GetCurrentFile()}\" -o \"{fileName}\" -s {accessor.GetPlayingSpeed()}");
+                accessor.SetCurrentFile(fileName);
+                accessor.SetPlayingSpeed(1f);
             }
         }
     }

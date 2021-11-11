@@ -5,7 +5,7 @@ namespace ITDimkClicker.Common.Data
 {
     public class MacroEvent
     {
-        public long Timestamp { get; }
+        public long Timestamp { get; set; }
         public RawInputData Data { get; }
 
         public MacroEvent(long timestamp, RawInputData data)

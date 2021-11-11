@@ -14,11 +14,11 @@ using ITDimkClicker.Common.Services;
 
 namespace ITDimkClicker.App.ViewModels
 {
-    
     public class MainViewModel : IMainViewModel
     {
         private string _currentFileName;
         private string _state = "Idle";
+        private float _speed = 1f;
 
         public FileCreateCommand FileCreate { get; }
         public FileOpenCommand FileOpen { get; }
@@ -26,7 +26,7 @@ namespace ITDimkClicker.App.ViewModels
         public RecordCommand Record { get; }
         public PlayCommand Play { get; }
         public MergeCommand Merge { get; }
-        public CurrentFileAccessor CurrentFileAccessor { get; } 
+        public CurrentFileAccessor CurrentFileAccessor { get; }
 
         public string CurrentFile
         {
@@ -52,20 +52,20 @@ namespace ITDimkClicker.App.ViewModels
 
         public float Speed
         {
-            get => CurrentFileAccessor?.PlayingSpeed ?? 1f;
+            get => _speed;
             set
             {
-                if(CurrentFileAccessor == null) return;
-                if (value.Equals(CurrentFileAccessor.PlayingSpeed)) return;
-                CurrentFileAccessor.PlayingSpeed = value;
+                if (value.Equals(_speed)) return;
+                _speed = value;
                 OnPropertyChanged();
             }
         }
 
         public MainViewModel(IConsoleAppRunner runner, IMacroIO io)
         {
-            CurrentFileAccessor = new CurrentFileAccessor((f) => CurrentFile = f, () => CurrentFile, Speed);
-            
+            CurrentFileAccessor =
+                new CurrentFileAccessor((f) => CurrentFile = f, () => CurrentFile, (s) => Speed = s, () => Speed);
+
             FileCreate = new FileCreateCommand(runner, io);
             FileOpen = new FileOpenCommand(runner);
             FileSave = new FileSaveCommand(runner);

@@ -25,7 +25,8 @@ namespace ITDimkClicker.App.Commands
             if (result == true)
             {
                 var accessor = (CurrentFileAccessor)parameter;
-                string inputFiles = dialog.FileNames.Select(f =>  $" -i \"{f}\"")
+                string inputFiles = new[] {accessor.GetCurrentFile()}.Concat(dialog.FileNames)
+                        .Select(f =>  $" -i \"{f}\"")
                     .Aggregate((result, item) => result + item);
                 
                 Runner.Run($"merge -o \"{accessor.GetCurrentFile()}\" {inputFiles}");

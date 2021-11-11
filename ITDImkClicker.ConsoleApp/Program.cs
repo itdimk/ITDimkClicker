@@ -61,7 +61,14 @@ namespace ITDImkClicker.ConsoleApp
                 macro.AddRange(io.ReadAll(input));
             }
 
-            using var output = File.Open(ArgsVariables.OutputFileName, FileMode.Append);
+            float speed = ArgsVariables.Speed;
+
+            if (ArgsVariables.Speed > 0)
+                foreach (var m in macro)
+                foreach (var e in m)
+                    e.Timestamp = (long) Math.Round(e.Timestamp / speed);
+
+            using var output = File.Open(ArgsVariables.OutputFileName, FileMode.OpenOrCreate);
             io.Write(output, macro.ToArray());
         }
 
