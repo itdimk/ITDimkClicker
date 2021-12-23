@@ -53,7 +53,7 @@ namespace ITDimkClicker.BL.Services
                 _simulator.Mouse.MoveMouseBy(mouseData.LastX, mouseData.LastY);
 
             if (mouseData.ButtonData != 0)
-                _simulator.Mouse.VerticalScroll(mouseData.ButtonData);
+                _simulator.Mouse.VerticalScroll(mouseData.ButtonData / _simulator.Mouse.MouseWheelClickSize);
 
             var mButtons = mouseData.Buttons;
 
