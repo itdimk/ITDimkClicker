@@ -17,7 +17,7 @@ namespace ITDimkClicker.App.ViewModels
     public class MainViewModel : IMainViewModel
     {
         private string _currentFileName;
-        private string _state = "Idle";
+        private string _state = "ALT + R to record\nALT + A to play";
         private float _speed = 1f;
 
         public FileCreateCommand FileCreate { get; }
@@ -73,7 +73,7 @@ namespace ITDimkClicker.App.ViewModels
             Merge = new MergeCommand(runner);
             Play = new PlayCommand(runner);
 
-            runner.IsRunningChanged += (sender, args) => State = runner.IsRunning ? "Working" : "Idle";
+            runner.IsRunningChanged += (sender, args) => State = runner.IsRunning ? "Working\nALT + S to stop" : "ALT + R to record\nALT + A to play";
             FileCreate.Execute(CurrentFileAccessor);
         }
 

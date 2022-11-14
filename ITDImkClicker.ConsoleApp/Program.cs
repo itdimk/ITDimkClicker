@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using ITDimkClicker.BL.Services;
@@ -80,6 +81,7 @@ namespace ITDImkClicker.ConsoleApp
             var macro = recorderApp.Run(ArgsVariables.BreakHotkey, ArgsVariables.BreakModifier);
             if (File.Exists(ArgsVariables.OutputFileName))
                 File.Delete(ArgsVariables.OutputFileName);
+            Debug.WriteLine(Thread.CurrentThread.ManagedThreadId);
 
             using var output = File.OpenWrite(ArgsVariables.OutputFileName);
             io.Write(output, macro);

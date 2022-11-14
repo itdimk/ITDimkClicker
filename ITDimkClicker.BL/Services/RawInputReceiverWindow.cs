@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Threading;
 using System.Windows.Forms;
 using ITDimkClicker.Common.Data;
 using ITDimkClicker.Common.Services;

@@ -31,7 +31,7 @@ namespace ITDimkClicker.App
 
             _iocKernel = new KernelConfiguration(new IocConfiguration())
                 .BuildReadonlyKernel();
-
+            
             Current.MainWindow = _iocKernel.Get<MainWindow>();
             Current.MainWindow.Show();
 
