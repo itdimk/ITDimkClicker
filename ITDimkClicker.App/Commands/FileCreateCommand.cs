@@ -21,7 +21,7 @@ namespace ITDimkClicker.App.Commands
             var accessor = (CurrentFileAccessor)parameter;
             
             string fileName = "New macro.bin";
-            string fullPath = Path.Combine(Environment.CurrentDirectory, fileName);
+            string fullPath = Path.Combine(Path.GetTempPath(), fileName);
             var macro = new Macro(0, 0);
 
             if(File.Exists(fullPath))

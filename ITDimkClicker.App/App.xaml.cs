@@ -15,6 +15,7 @@ using ITDImkClicker.ConsoleApp.Data;
 using Ninject;
 using Ninject.Modules;
 using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
 
 namespace ITDimkClicker.App
 {
@@ -27,13 +28,21 @@ namespace ITDimkClicker.App
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
+            try
+            {
+                base.OnStartup(e);
 
-            _iocKernel = new KernelConfiguration(new IocConfiguration())
-                .BuildReadonlyKernel();
-            
-            Current.MainWindow = _iocKernel.Get<MainWindow>();
-            Current.MainWindow.Show();
+                _iocKernel = new KernelConfiguration(new IocConfiguration())
+                    .BuildReadonlyKernel();
+
+                Current.MainWindow = _iocKernel.Get<MainWindow>();
+                Current.MainWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                File.WriteAllText("log.txt",$"{ex.Message}\n{ex.StackTrace}");
+            }
 
         }
     }
